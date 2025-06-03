@@ -1,0 +1,145 @@
+[gd_scene load_steps=10 format=3 uid="uid://bvkfouf2x3co4"]
+
+[ext_resource type="Script" path="res://UI/credits/credits.gd" id="1_j658o"]
+[ext_resource type="Texture2D" uid="uid://br4l0jt6j8m1y" path="res://UI/Titlescreen/AltTitle.png" id="2_viixj"]
+[ext_resource type="Texture2D" uid="uid://b2ms15ysrada0" path="res://UI/themes/kenney_fantasy-ui-borders/PNG/Default/Border/panel-border-010.png" id="4_58l3o"]
+[ext_resource type="AudioStream" uid="uid://dou332p7rold7" path="res://music/Chalk Dust and Legends.mp3" id="8_p7mog"]
+
+[sub_resource type="SystemFont" id="SystemFont_6q4rk"]
+multichannel_signed_distance_field = true
+
+[sub_resource type="SystemFont" id="SystemFont_6v0fm"]
+font_names = PackedStringArray("Arial")
+multichannel_signed_distance_field = true
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_3vyhw"]
+texture = ExtResource("4_58l3o")
+texture_margin_left = 10.0
+texture_margin_top = 10.0
+texture_margin_right = 10.0
+texture_margin_bottom = 10.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_kudoa"]
+size = Vector2(200.5, 100.45)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_nra82"]
+
+[node name="Credits" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_j658o")
+
+[node name="MenuFinished" type="Sprite2D" parent="."]
+z_index = -10
+position = Vector2(960, 540)
+scale = Vector2(1.25, 1.05469)
+texture = ExtResource("2_viixj")
+
+[node name="Label" type="Label" parent="."]
+visible = false
+layout_mode = 0
+offset_right = 526.0
+offset_bottom = 283.0
+text = "Title
+"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -334.0
+offset_top = -165.0
+offset_right = 220.0
+offset_bottom = 39.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/HBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/outline_size = 20
+theme_override_fonts/font = SubResource("SystemFont_6q4rk")
+theme_override_font_sizes/font_size = 60
+text = "Credits
+"
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer2/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/outline_size = 10
+theme_override_font_sizes/font_size = 30
+text = "This game has been made by Jens Christian Valen Leynse
+"
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/HBoxContainer3"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer3/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/outline_size = 10
+theme_override_font_sizes/font_size = 30
+text = "For the \"Computer Science Seminar: GameLab\""
+
+[node name="BackButton" type="Button" parent="VBoxContainer"]
+custom_minimum_size = Vector2(200, 100)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 30
+theme_override_fonts/font = SubResource("SystemFont_6v0fm")
+theme_override_font_sizes/font_size = 40
+theme_override_styles/normal = SubResource("StyleBoxTexture_3vyhw")
+text = "Back"
+
+[node name="Area2D" type="Area2D" parent="VBoxContainer/BackButton"]
+collision_layer = 65536
+collision_mask = 524288
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="VBoxContainer/BackButton/Area2D"]
+position = Vector2(100, 50)
+shape = SubResource("RectangleShape2D_kudoa")
+
+[node name="Pointer" type="Area2D" parent="."]
+position = Vector2(1100, 0)
+collision_layer = 524288
+collision_mask = 65536
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Pointer"]
+shape = SubResource("RectangleShape2D_nra82")
+
+[node name="MusicPlayer" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("8_p7mog")
+volume_db = 20.0
+
+[connection signal="focus_entered" from="VBoxContainer/BackButton" to="VBoxContainer/BackButton" method="_on_QuitButton_focus_entered"]
+[connection signal="focus_exited" from="VBoxContainer/BackButton" to="VBoxContainer/BackButton" method="_on_QuitButton_focus_exited"]
+[connection signal="mouse_entered" from="VBoxContainer/BackButton" to="VBoxContainer/BackButton" method="_on_Button_mouse_entered"]
+[connection signal="mouse_exited" from="VBoxContainer/BackButton" to="VBoxContainer/BackButton" method="_on_Button_mouse_exited"]
+[connection signal="pressed" from="VBoxContainer/BackButton" to="VBoxContainer/BackButton" method="_on_pressed"]
+[connection signal="area_entered" from="VBoxContainer/BackButton/Area2D" to="VBoxContainer/BackButton" method="_on_Area2D_area_entered"]
+[connection signal="area_exited" from="VBoxContainer/BackButton/Area2D" to="VBoxContainer/BackButton" method="_on_Area2D_area_exted"]

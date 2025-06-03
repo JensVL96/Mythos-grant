@@ -1,0 +1,47 @@
+[gd_scene load_steps=4 format=3 uid="uid://imkk6qltwdef"]
+
+[ext_resource type="Texture2D" uid="uid://dvnqrjw8phdyh" path="res://Swords/Sword.png" id="1_567w3"]
+[ext_resource type="Script" path="res://Hitbox/hitboxSword.gd" id="1_s0xhe"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_4c4og"]
+size = Vector2(56, 125)
+
+[node name="PendulumSword" type="Node2D"]
+script = ExtResource("1_s0xhe")
+gravity = null
+damping = null
+arm_length = null
+input_sensitivity = null
+attack_damping = null
+tracking_response = null
+max_tracking_speed = null
+release_deceleration = null
+max_release_speed = null
+damage = null
+kb_angle = null
+base_kb = null
+kb_scaling = null
+duration = null
+hitlag_modifier = null
+type = null
+angle_flipper = null
+percentage = null
+weight = null
+base_knockback = null
+ratio = null
+CLASH_FORCE_MULTIPLIER = null
+MAX_ANGULAR_VELOCITY = null
+CLASH_DAMPING = null
+
+[node name="Sword" type="Sprite2D" parent="."]
+position = Vector2(-3, -25)
+texture = ExtResource("1_567w3")
+
+[node name="Hitbox" type="Area2D" parent="."]
+
+[node name="Hitbox_Shape" type="CollisionShape2D" parent="Hitbox"]
+position = Vector2(-3, -25.5)
+shape = SubResource("RectangleShape2D_4c4og")
+
+[connection signal="area_entered" from="Hitbox" to="." method="_on_sword_clash"]
+[connection signal="body_entered" from="Hitbox" to="." method="_on_hitbox_body_entered"]

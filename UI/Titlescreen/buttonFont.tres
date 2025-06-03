@@ -1,0 +1,5 @@
+[gd_resource type="SystemFont" format=3 uid="uid://cej7y0pr4hijb"]
+
+[resource]
+font_names = PackedStringArray("Arial")
+multichannel_signed_distance_field = true

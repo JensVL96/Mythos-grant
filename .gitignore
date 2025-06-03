@@ -1,0 +1,36 @@
+# Godot 4+ specific ignores
+.godot/
+/android/
+
+# Godot-specific
+.import/
+export.cfg
+export_presets.cfg
+*.import
+*.godot/tmp/*
+
+# OS junk
+.DS_Store
+Thumbs.db
+
+# Compiled stuff
+*.exe
+*.dll
+*.pdb
+*.apk
+*.zip
+
+# Files
+# Ignore everything under kenney_fantasy-ui-borders
+UI/themes/kenney_fantasy-ui-borders/*
+
+# But keep the PNG/Default/Border folder and its contents
+!UI/themes/kenney_fantasy-ui-borders/PNG/
+!UI/themes/kenney_fantasy-ui-borders/PNG/Default/
+!UI/themes/kenney_fantasy-ui-borders/PNG/Default/Border/
+
+Characters/Fox/*
+Hitbox/Hitbox.gd
+Hitbox/Hitbox.tscn
+Stages/Smashville/*
+tests/*

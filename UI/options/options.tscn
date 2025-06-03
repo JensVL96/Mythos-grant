@@ -1,0 +1,234 @@
+[gd_scene load_steps=20 format=3 uid="uid://bd8cy88wb0mcu"]
+
+[ext_resource type="Script" path="res://UI/options/options.gd" id="1_fxh88"]
+[ext_resource type="Texture2D" uid="uid://br4l0jt6j8m1y" path="res://UI/Titlescreen/AltTitle.png" id="2_udosp"]
+[ext_resource type="SystemFont" uid="uid://cej7y0pr4hijb" path="res://UI/Titlescreen/buttonFont.tres" id="3_vkek6"]
+[ext_resource type="Texture2D" uid="uid://b2ms15ysrada0" path="res://UI/themes/kenney_fantasy-ui-borders/PNG/Default/Border/panel-border-010.png" id="4_v8b0g"]
+[ext_resource type="AudioStream" uid="uid://dou332p7rold7" path="res://music/Chalk Dust and Legends.mp3" id="5_kmkrk"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_06d1e"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_1qce5"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_jjgvl"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_44xsj"]
+size = Vector2(300, 98)
+
+[sub_resource type="SystemFont" id="SystemFont_oovne"]
+font_names = PackedStringArray("Arial")
+multichannel_signed_distance_field = true
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_fkjpp"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_uv3gh"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_4heeo"]
+size = Vector2(298, 102)
+
+[sub_resource type="SystemFont" id="SystemFont_2nvpa"]
+font_names = PackedStringArray("Arial")
+multichannel_signed_distance_field = true
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_e6htk"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_obphu"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_t4id8"]
+size = Vector2(299, 100)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_8bvub"]
+texture = ExtResource("4_v8b0g")
+texture_margin_left = 10.0
+texture_margin_top = 10.0
+texture_margin_right = 10.0
+texture_margin_bottom = 10.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_nra82"]
+
+[node name="Options" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_fxh88")
+
+[node name="MenuFinished" type="Sprite2D" parent="."]
+z_index = -10
+position = Vector2(960, 540)
+scale = Vector2(1.25, 1.05469)
+texture = ExtResource("2_udosp")
+
+[node name="Label" type="Label" parent="."]
+visible = false
+layout_mode = 0
+offset_right = 526.0
+offset_bottom = 283.0
+text = "Title
+"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -760.0
+offset_top = -224.0
+offset_right = 627.0
+offset_bottom = 267.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 10
+size_flags_vertical = 4
+theme_override_constants/separation = 10
+
+[node name="Options" type="Label" parent="HBoxContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 60
+theme_override_styles/normal = SubResource("StyleBoxTexture_06d1e")
+text = "Options"
+
+[node name="FullscreenToggle" type="CheckButton" parent="HBoxContainer/VBoxContainer"]
+custom_minimum_size = Vector2(300, 100)
+layout_mode = 2
+size_flags_horizontal = 8
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 30
+theme_override_fonts/font = ExtResource("3_vkek6")
+theme_override_font_sizes/font_size = 40
+theme_override_styles/focus = SubResource("StyleBoxEmpty_1qce5")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_jjgvl")
+text = "Fullscreen"
+alignment = 1
+
+[node name="Area2D" type="Area2D" parent="HBoxContainer/VBoxContainer/FullscreenToggle"]
+collision_layer = 65536
+collision_mask = 524288
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HBoxContainer/VBoxContainer/FullscreenToggle/Area2D"]
+position = Vector2(149, 50)
+shape = SubResource("RectangleShape2D_44xsj")
+
+[node name="MusicToggle" type="CheckButton" parent="HBoxContainer/VBoxContainer"]
+custom_minimum_size = Vector2(300, 100)
+layout_mode = 2
+size_flags_horizontal = 8
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 30
+theme_override_fonts/font = SubResource("SystemFont_oovne")
+theme_override_font_sizes/font_size = 40
+theme_override_styles/focus = SubResource("StyleBoxEmpty_fkjpp")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_uv3gh")
+text = "Music
+"
+alignment = 1
+
+[node name="Area2D" type="Area2D" parent="HBoxContainer/VBoxContainer/MusicToggle"]
+collision_layer = 65536
+collision_mask = 524288
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HBoxContainer/VBoxContainer/MusicToggle/Area2D"]
+position = Vector2(150, 50)
+shape = SubResource("RectangleShape2D_4heeo")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer/VBoxContainer"]
+custom_minimum_size = Vector2(100, 10)
+layout_mode = 2
+alignment = 1
+
+[node name="Volume" type="Label" parent="HBoxContainer/VBoxContainer/HBoxContainer"]
+visible = false
+layout_mode = 2
+theme_override_font_sizes/font_size = 40
+text = "Music"
+
+[node name="VolumeSlider" type="HSlider" parent="HBoxContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+min_value = 1.0
+value = 1.0
+
+[node name="SoundToggle" type="CheckButton" parent="HBoxContainer/VBoxContainer"]
+custom_minimum_size = Vector2(300, 100)
+layout_mode = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 30
+theme_override_fonts/font = SubResource("SystemFont_2nvpa")
+theme_override_font_sizes/font_size = 40
+theme_override_styles/focus = SubResource("StyleBoxEmpty_e6htk")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_obphu")
+text = "Sound"
+alignment = 1
+
+[node name="Area2D" type="Area2D" parent="HBoxContainer/VBoxContainer/SoundToggle"]
+collision_layer = 65536
+collision_mask = 524288
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HBoxContainer/VBoxContainer/SoundToggle/Area2D"]
+position = Vector2(150.5, 51)
+shape = SubResource("RectangleShape2D_t4id8")
+
+[node name="BackButton" type="Button" parent="HBoxContainer/VBoxContainer"]
+custom_minimum_size = Vector2(300, 100)
+layout_mode = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 30
+theme_override_fonts/font = SubResource("SystemFont_2nvpa")
+theme_override_font_sizes/font_size = 40
+theme_override_styles/normal = SubResource("StyleBoxTexture_8bvub")
+text = "Back"
+
+[node name="Area2D" type="Area2D" parent="HBoxContainer/VBoxContainer/BackButton"]
+collision_layer = 65536
+collision_mask = 524288
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HBoxContainer/VBoxContainer/BackButton/Area2D"]
+position = Vector2(150.5, 51)
+shape = SubResource("RectangleShape2D_t4id8")
+
+[node name="Pointer" type="Area2D" parent="."]
+position = Vector2(1100, 0)
+collision_layer = 524288
+collision_mask = 65536
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Pointer"]
+shape = SubResource("RectangleShape2D_nra82")
+
+[node name="MusicPlayer" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("5_kmkrk")
+volume_db = 20.0
+
+[connection signal="focus_entered" from="HBoxContainer/VBoxContainer/FullscreenToggle" to="HBoxContainer/VBoxContainer/FullscreenToggle" method="_on_SinglePlayerButton_focus_entered"]
+[connection signal="focus_exited" from="HBoxContainer/VBoxContainer/FullscreenToggle" to="HBoxContainer/VBoxContainer/FullscreenToggle" method="_on_SinglePlayerButton_focus_exited"]
+[connection signal="mouse_entered" from="HBoxContainer/VBoxContainer/FullscreenToggle" to="HBoxContainer/VBoxContainer/FullscreenToggle" method="_on_Button_mouse_entered"]
+[connection signal="mouse_exited" from="HBoxContainer/VBoxContainer/FullscreenToggle" to="HBoxContainer/VBoxContainer/FullscreenToggle" method="_on_Button_mouse_exited"]
+[connection signal="pressed" from="HBoxContainer/VBoxContainer/FullscreenToggle" to="HBoxContainer/VBoxContainer/FullscreenToggle" method="_on_pressed"]
+[connection signal="area_entered" from="HBoxContainer/VBoxContainer/FullscreenToggle/Area2D" to="HBoxContainer/VBoxContainer/FullscreenToggle" method="_on_Area2D_area_entered"]
+[connection signal="area_exited" from="HBoxContainer/VBoxContainer/FullscreenToggle/Area2D" to="HBoxContainer/VBoxContainer/FullscreenToggle" method="_on_Area2D_area_exited"]
+[connection signal="focus_entered" from="HBoxContainer/VBoxContainer/MusicToggle" to="HBoxContainer/VBoxContainer/MusicToggle" method="_on_OptionsButton_focus_entered"]
+[connection signal="focus_exited" from="HBoxContainer/VBoxContainer/MusicToggle" to="HBoxContainer/VBoxContainer/MusicToggle" method="_on_OptionsButton_focus_exited"]
+[connection signal="mouse_entered" from="HBoxContainer/VBoxContainer/MusicToggle" to="HBoxContainer/VBoxContainer/MusicToggle" method="_on_Button_mouse_entered"]
+[connection signal="mouse_exited" from="HBoxContainer/VBoxContainer/MusicToggle" to="HBoxContainer/VBoxContainer/MusicToggle" method="_on_Button_mouse_exited"]
+[connection signal="pressed" from="HBoxContainer/VBoxContainer/MusicToggle" to="HBoxContainer/VBoxContainer/MusicToggle" method="_on_pressed"]
+[connection signal="area_entered" from="HBoxContainer/VBoxContainer/MusicToggle/Area2D" to="HBoxContainer/VBoxContainer/MusicToggle" method="_on_Area2D_area_entered"]
+[connection signal="area_exited" from="HBoxContainer/VBoxContainer/MusicToggle/Area2D" to="HBoxContainer/VBoxContainer/MusicToggle" method="_on_Area2D_area_exted"]
+[connection signal="focus_entered" from="HBoxContainer/VBoxContainer/SoundToggle" to="HBoxContainer/VBoxContainer/SoundToggle" method="_on_QuitButton_focus_entered"]
+[connection signal="focus_exited" from="HBoxContainer/VBoxContainer/SoundToggle" to="HBoxContainer/VBoxContainer/SoundToggle" method="_on_QuitButton_focus_exited"]
+[connection signal="mouse_entered" from="HBoxContainer/VBoxContainer/SoundToggle" to="HBoxContainer/VBoxContainer/SoundToggle" method="_on_Button_mouse_entered"]
+[connection signal="mouse_exited" from="HBoxContainer/VBoxContainer/SoundToggle" to="HBoxContainer/VBoxContainer/SoundToggle" method="_on_Button_mouse_exited"]
+[connection signal="pressed" from="HBoxContainer/VBoxContainer/SoundToggle" to="HBoxContainer/VBoxContainer/SoundToggle" method="_on_pressed"]
+[connection signal="area_entered" from="HBoxContainer/VBoxContainer/SoundToggle/Area2D" to="HBoxContainer/VBoxContainer/SoundToggle" method="_on_Area2D_area_entered"]
+[connection signal="area_exited" from="HBoxContainer/VBoxContainer/SoundToggle/Area2D" to="HBoxContainer/VBoxContainer/SoundToggle" method="_on_Area2D_area_exted"]
+[connection signal="focus_entered" from="HBoxContainer/VBoxContainer/BackButton" to="HBoxContainer/VBoxContainer/BackButton" method="_on_QuitButton_focus_entered"]
+[connection signal="focus_exited" from="HBoxContainer/VBoxContainer/BackButton" to="HBoxContainer/VBoxContainer/BackButton" method="_on_QuitButton_focus_exited"]
+[connection signal="mouse_entered" from="HBoxContainer/VBoxContainer/BackButton" to="HBoxContainer/VBoxContainer/BackButton" method="_on_Button_mouse_entered"]
+[connection signal="mouse_exited" from="HBoxContainer/VBoxContainer/BackButton" to="HBoxContainer/VBoxContainer/BackButton" method="_on_Button_mouse_exited"]
+[connection signal="pressed" from="HBoxContainer/VBoxContainer/BackButton" to="HBoxContainer/VBoxContainer/BackButton" method="_on_pressed"]
+[connection signal="area_entered" from="HBoxContainer/VBoxContainer/BackButton/Area2D" to="HBoxContainer/VBoxContainer/BackButton" method="_on_Area2D_area_entered"]
+[connection signal="area_exited" from="HBoxContainer/VBoxContainer/BackButton/Area2D" to="HBoxContainer/VBoxContainer/BackButton" method="_on_Area2D_area_exted"]

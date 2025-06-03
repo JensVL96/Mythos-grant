@@ -1,0 +1,466 @@
+[gd_scene load_steps=30 format=3 uid="uid://ch6h20ky17yve"]
+
+[ext_resource type="Script" path="res://Stages/test_stage.gd" id="1_3trnn"]
+[ext_resource type="Texture2D" uid="uid://bbdyej4mf1pri" path="res://Stages/Smashville/1.png" id="1_gup5q"]
+[ext_resource type="Script" path="res://Stages/StageCamera.gd" id="3_amvbu"]
+[ext_resource type="PackedScene" uid="uid://co14ctvb1mvl2" path="res://Stages/Stage Assets/Ledge.tscn" id="4_y2bko"]
+[ext_resource type="PackedScene" uid="uid://bltx7b8frjhjd" path="res://Characters/Prof/Prof.tscn" id="6_duald"]
+[ext_resource type="PackedScene" uid="uid://map" path="res://Stages/Norse/map/Map.tscn" id="6_q530o"]
+[ext_resource type="Texture2D" uid="uid://bjlx58f6mfe8c" path="res://UI/healthbars/blue_health_1_small.png" id="7_3c4cd"]
+[ext_resource type="Texture2D" uid="uid://vrt8vrpkyott" path="res://UI/healthbars/blue_health_1_big.png" id="8_pk15l"]
+[ext_resource type="Texture2D" uid="uid://b01x6kqsn0eph" path="res://UI/healthbars/blue_health_2.png" id="9_jujvo"]
+[ext_resource type="Texture2D" uid="uid://d3p00fk4qqpew" path="res://UI/healthbars/blue_health_3.png" id="10_24qqw"]
+[ext_resource type="Texture2D" uid="uid://dtmakav301mel" path="res://UI/healthbars/blue_health_4.png" id="11_rts1t"]
+[ext_resource type="Texture2D" uid="uid://c26dc51e81u71" path="res://UI/healthbars/blue_health_5.png" id="12_a1kj1"]
+[ext_resource type="Texture2D" uid="uid://4n5mggkvay7w" path="res://UI/healthbars/red_health_1_small.png" id="13_o5hxd"]
+[ext_resource type="Texture2D" uid="uid://k6rbyuuumryc" path="res://UI/healthbars/red_health_1_big.png" id="14_fa4wi"]
+[ext_resource type="Texture2D" uid="uid://4f7ruqqoqc76" path="res://UI/healthbars/red_health_2.png" id="15_5cjdo"]
+[ext_resource type="Texture2D" uid="uid://die0g7iw5fwql" path="res://UI/healthbars/red_health_3.png" id="16_2wfh0"]
+[ext_resource type="Texture2D" uid="uid://cppncjp12haas" path="res://UI/healthbars/red_health_4.png" id="17_cekeg"]
+[ext_resource type="Texture2D" uid="uid://bba2to02sxwsk" path="res://UI/healthbars/red_health_5.png" id="18_vapy0"]
+[ext_resource type="AudioStream" uid="uid://bytrin6vjreyo" path="res://music/The Call of the Valkyries.mp3" id="19_7gcrm"]
+[ext_resource type="Texture2D" uid="uid://b2ms15ysrada0" path="res://UI/themes/kenney_fantasy-ui-borders/PNG/Default/Border/panel-border-010.png" id="19_jc5cj"]
+[ext_resource type="Script" path="res://Stages/victoryScreen.gd" id="19_m7boj"]
+[ext_resource type="SystemFont" uid="uid://cej7y0pr4hijb" path="res://UI/Titlescreen/buttonFont.tres" id="20_xlmo6"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_al06n"]
+size = Vector2(962, 38)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_w4f8t"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("7_3c4cd")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_pk15l")
+}],
+"loop": true,
+"name": &"1",
+"speed": 2.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("9_jujvo")
+}],
+"loop": false,
+"name": &"2",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("10_24qqw")
+}],
+"loop": false,
+"name": &"3",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("11_rts1t")
+}],
+"loop": false,
+"name": &"4",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("12_a1kj1")
+}],
+"loop": false,
+"name": &"5",
+"speed": 5.0
+}]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_c41je"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("13_o5hxd")
+}, {
+"duration": 1.0,
+"texture": ExtResource("14_fa4wi")
+}],
+"loop": true,
+"name": &"1",
+"speed": 2.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("15_5cjdo")
+}],
+"loop": false,
+"name": &"2",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("16_2wfh0")
+}],
+"loop": false,
+"name": &"3",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("17_cekeg")
+}],
+"loop": false,
+"name": &"4",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("18_vapy0")
+}],
+"loop": false,
+"name": &"5",
+"speed": 5.0
+}]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_w4j7j"]
+bg_color = Color(0.15, 0.37, 0.2, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4y1o8"]
+bg_color = Color(0.28, 0.64, 0.36, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_v5u7b"]
+texture = ExtResource("19_jc5cj")
+texture_margin_left = 10.0
+texture_margin_top = 10.0
+texture_margin_right = 10.0
+texture_margin_bottom = 10.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_7ktrx"]
+texture = ExtResource("19_jc5cj")
+texture_margin_left = 10.0
+texture_margin_top = 10.0
+texture_margin_right = 10.0
+texture_margin_bottom = 10.0
+
+[node name="Stage" type="Node2D"]
+script = ExtResource("1_3trnn")
+
+[node name="map" parent="." instance=ExtResource("6_q530o")]
+position = Vector2(-908, -896)
+scale = Vector2(1.5, 1.5)
+
+[node name="Template" type="Sprite2D" parent="."]
+visible = false
+scale = Vector2(2, 2)
+texture = ExtResource("1_gup5q")
+
+[node name="Floor" type="StaticBody2D" parent="."]
+visible = false
+position = Vector2(0, 230)
+collision_layer = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Floor"]
+shape = SubResource("RectangleShape2D_al06n")
+
+[node name="Label" type="Label" parent="Floor"]
+offset_left = 33.0
+offset_top = -12.0
+offset_right = 73.0
+offset_bottom = 11.0
+text = "Floor"
+metadata/_edit_use_anchors_ = true
+
+[node name="Wall" type="StaticBody2D" parent="."]
+visible = false
+position = Vector2(1, 292)
+collision_layer = 0
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Wall"]
+position = Vector2(-788, -743)
+polygon = PackedVector2Array(1269, 700, 1210, 756, 1126, 794, 447, 795, 362, 756, 305, 700, 510.39, 700)
+
+[node name="Label" type="Label" parent="Wall"]
+offset_left = 30.0
+offset_top = -7.0
+offset_right = 64.0
+offset_bottom = 16.0
+text = "Wall"
+metadata/_edit_use_anchors_ = true
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(42, 25)
+limit_left = -1140
+limit_top = -710
+limit_right = 1150
+limit_bottom = 550
+drag_horizontal_enabled = true
+drag_vertical_enabled = true
+drag_left_margin = 0.0
+drag_right_margin = 0.0
+editor_draw_limits = true
+editor_draw_drag_margin = true
+script = ExtResource("3_amvbu")
+
+[node name="Ledge" parent="." instance=ExtResource("4_y2bko")]
+visible = false
+position = Vector2(482, 230)
+ledge_side = "Right"
+
+[node name="Ledge2" parent="." instance=ExtResource("4_y2bko")]
+visible = false
+position = Vector2(-481, 230)
+
+[node name="Ledge3" parent="." instance=ExtResource("4_y2bko")]
+visible = false
+position = Vector2(172, -27)
+
+[node name="Ledge4" parent="." instance=ExtResource("4_y2bko")]
+visible = false
+position = Vector2(247, -27)
+ledge_side = "Right"
+
+[node name="Main Stage 1" type="Sprite2D" parent="."]
+visible = false
+z_index = -2
+
+[node name="Main Stage 2" type="Sprite2D" parent="."]
+visible = false
+z_index = 3
+
+[node name="PROF" parent="." groups=["players"] instance=ExtResource("6_duald")]
+position = Vector2(-228, 145)
+id = 2
+
+[node name="PROF2" parent="." groups=["players"] instance=ExtResource("6_duald")]
+position = Vector2(278, 148)
+id = 1
+
+[node name="SpawnPoints" type="Node" parent="."]
+
+[node name="SpawnP1" type="Marker2D" parent="SpawnPoints"]
+position = Vector2(-320, 239)
+
+[node name="SpawnP2" type="Marker2D" parent="SpawnPoints"]
+position = Vector2(363, 243)
+
+[node name="SpawnP3" type="Marker2D" parent="SpawnPoints"]
+position = Vector2(363, 243)
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="UI" type="Node" parent="CanvasLayer"]
+
+[node name="HealthbarP1" type="AnimatedSprite2D" parent="CanvasLayer/UI"]
+z_index = 100
+position = Vector2(260, 140)
+scale = Vector2(3, 3)
+sprite_frames = SubResource("SpriteFrames_w4f8t")
+animation = &"5"
+frame_progress = 1.0
+
+[node name="HealthbarP2" type="AnimatedSprite2D" parent="CanvasLayer/UI"]
+z_index = 100
+position = Vector2(1660, 140)
+scale = Vector2(3, 3)
+sprite_frames = SubResource("SpriteFrames_c41je")
+animation = &"5"
+frame_progress = 1.0
+
+[node name="VictoryScreen" type="Control" parent="CanvasLayer/UI"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("19_m7boj")
+
+[node name="ColorRect" type="ColorRect" parent="CanvasLayer/UI/VictoryScreen"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.313726)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/UI/VictoryScreen"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -336.0
+offset_top = -191.0
+offset_right = 336.0
+offset_bottom = 191.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 20
+alignment = 1
+
+[node name="Scoreboard" type="HBoxContainer" parent="CanvasLayer/UI/VictoryScreen/VBoxContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="redWrap" type="CenterContainer" parent="CanvasLayer/UI/VictoryScreen/VBoxContainer/Scoreboard"]
+layout_mode = 2
+
+[node name="RedSide" type="Control" parent="CanvasLayer/UI/VictoryScreen/VBoxContainer/Scoreboard/redWrap"]
+custom_minimum_size = Vector2(100, 70)
+layout_mode = 2
+
+[node name="ColorRect" type="ColorRect" parent="CanvasLayer/UI/VictoryScreen/VBoxContainer/Scoreboard/redWrap/RedSide"]
+custom_minimum_size = Vector2(100, 50)
+layout_mode = 2
+offset_top = 10.0
+offset_right = 100.0
+offset_bottom = 60.0
+color = Color(1, 0, 0, 1)
+
+[node name="redScore" type="Label" parent="CanvasLayer/UI/VictoryScreen/VBoxContainer/Scoreboard/redWrap/RedSide"]
+layout_mode = 2
+offset_left = 28.0
+offset_top = 6.0
+offset_right = 128.0
+offset_bottom = 61.0
+theme_override_constants/outline_size = 10
+theme_override_font_sizes/font_size = 40
+text = "0"
+
+[node name="VSBadge" type="CenterContainer" parent="CanvasLayer/UI/VictoryScreen/VBoxContainer/Scoreboard"]
+layout_mode = 2
+
+[node name="TextureRect" type="Polygon2D" parent="CanvasLayer/UI/VictoryScreen/VBoxContainer/Scoreboard/VSBadge"]
+position = Vector2(-158, -253)
+color = Color(0, 0, 0, 1)
+polygon = PackedVector2Array(120, 250, 260, 250, 220, 330, 160, 330)
+
+[node name="Label" type="Label" parent="CanvasLayer/UI/VictoryScreen/VBoxContainer/Scoreboard/VSBadge"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 50
+text = "VS"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="blueWrap" type="CenterContainer" parent="CanvasLayer/UI/VictoryScreen/VBoxContainer/Scoreboard"]
+layout_mode = 2
+
+[node name="BlueSide" type="Control" parent="CanvasLayer/UI/VictoryScreen/VBoxContainer/Scoreboard/blueWrap"]
+z_index = -1
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+
+[node name="ColorRect" type="ColorRect" parent="CanvasLayer/UI/VictoryScreen/VBoxContainer/Scoreboard/blueWrap/BlueSide"]
+custom_minimum_size = Vector2(100, 50)
+layout_mode = 2
+offset_left = 6.0
+offset_top = -23.0
+offset_right = 106.0
+offset_bottom = 27.0
+color = Color(0, 0, 1, 1)
+
+[node name="blueScore" type="Label" parent="CanvasLayer/UI/VictoryScreen/VBoxContainer/Scoreboard/blueWrap/BlueSide"]
+layout_mode = 2
+offset_left = 51.0
+offset_top = -26.0
+offset_right = 151.0
+offset_bottom = 29.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 10
+theme_override_font_sizes/font_size = 40
+text = "0"
+
+[node name="winningPlayer" type="Label" parent="CanvasLayer/UI/VictoryScreen/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/outline_size = 20
+theme_override_font_sizes/font_size = 50
+text = "Red vs Blue"
+horizontal_alignment = 1
+
+[node name="GamesContainer" type="HBoxContainer" parent="CanvasLayer/UI/VictoryScreen/VBoxContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/UI/VictoryScreen/VBoxContainer/GamesContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="CanvasLayer/UI/VictoryScreen/VBoxContainer/GamesContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/outline_size = 10
+theme_override_font_sizes/font_size = 30
+text = "Games"
+horizontal_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/UI/VictoryScreen/VBoxContainer/GamesContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 30
+alignment = 1
+
+[node name="1‐game" type="Button" parent="CanvasLayer/UI/VictoryScreen/VBoxContainer/GamesContainer/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(50, 10)
+layout_mode = 2
+theme_override_styles/pressed = SubResource("StyleBoxFlat_w4j7j")
+theme_override_styles/normal = SubResource("StyleBoxFlat_4y1o8")
+toggle_mode = true
+text = "1"
+
+[node name="3‐game" type="Button" parent="CanvasLayer/UI/VictoryScreen/VBoxContainer/GamesContainer/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(50, 0)
+layout_mode = 2
+theme_override_styles/pressed = SubResource("StyleBoxFlat_w4j7j")
+theme_override_styles/normal = SubResource("StyleBoxFlat_4y1o8")
+toggle_mode = true
+text = "3"
+
+[node name="5‐game" type="Button" parent="CanvasLayer/UI/VictoryScreen/VBoxContainer/GamesContainer/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(50, 0)
+layout_mode = 2
+theme_override_styles/pressed = SubResource("StyleBoxFlat_w4j7j")
+theme_override_styles/normal = SubResource("StyleBoxFlat_4y1o8")
+toggle_mode = true
+text = "5"
+
+[node name="SpinBox" type="SpinBox" parent="CanvasLayer/UI/VictoryScreen/VBoxContainer/GamesContainer"]
+visible = false
+layout_mode = 2
+min_value = 1.0
+max_value = 5.0
+step = 2.0
+value = 1.0
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="CanvasLayer/UI/VictoryScreen/VBoxContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="ButtonRetry" type="Button" parent="CanvasLayer/UI/VictoryScreen/VBoxContainer/HBoxContainer2"]
+custom_minimum_size = Vector2(170, 0)
+layout_mode = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 10
+theme_override_fonts/font = ExtResource("20_xlmo6")
+theme_override_font_sizes/font_size = 16
+theme_override_styles/normal = SubResource("StyleBoxTexture_v5u7b")
+text = "Start playing"
+
+[node name="ButtonExit" type="Button" parent="CanvasLayer/UI/VictoryScreen/VBoxContainer/HBoxContainer2"]
+custom_minimum_size = Vector2(170, 0)
+layout_mode = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 10
+theme_override_fonts/font = ExtResource("20_xlmo6")
+theme_override_font_sizes/font_size = 16
+theme_override_styles/normal = SubResource("StyleBoxTexture_7ktrx")
+text = "Exit to menu"
+
+[node name="Label" type="Label" parent="CanvasLayer"]
+visible = false
+offset_right = 40.0
+offset_bottom = 23.0
+theme_override_font_sizes/font_size = 40
+text = "Testing"
+
+[node name="StageMusic" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("19_7gcrm")
+autoplay = true
+
+[node name="InvulnTimer" type="Timer" parent="."]
