@@ -3,12 +3,14 @@ extends Node2D
 # How many rounds to play this series
 var target_games := 1
 var match_over := false
+var round_ended := false
 
 # Track wins: index 1 and 2
 var wins := {1: 0, 2: 0}
 
 var start_position: Vector2
 var max_stocks = 5
+var current_coin: Node = null
 
 @onready var invuln_timer = $InvulnTimer
 var is_invulnerable: bool = false
@@ -40,6 +42,13 @@ func _input(event):
 @onready var spawn_p1 = $SpawnPoints/SpawnP1
 @onready var spawn_p2 = $SpawnPoints/SpawnP2
 
+var CoinScene := preload("res://UI/Common/Scenes/Coin.tscn")
+@onready var coin_spawn_points = [
+	$SpawnPoints/MoneySpawn1,
+	$SpawnPoints/MoneySpawn2,
+	$SpawnPoints/MoneySpawn3,
+]
+
 func update_health(player_id: int, lives: int) -> void:
 	lives = clamp(lives, 0, 5)
 	if str(lives) == '0':
@@ -52,6 +61,7 @@ func update_health(player_id: int, lives: int) -> void:
 
 
 func _ready():
+	GlobalMusic.stop()
 	match_over = false
 	invuln_timer.timeout.connect(_on_InvulnTimer_timeout)
 	btn_retry.pressed.connect(_on_retry_pressed)
@@ -104,6 +114,12 @@ func _ready():
 	start_round()
 
 func start_round():
+	print(">>> START ROUND")
+	round_ended = false
+	# Spawn the first coin for this round
+	#randomize()
+	#await get_tree().create_timer(10.0).timeout
+	spawn_coin()
 	# Read how many rounds to play
 	#target_games = spin_box.value if spin_box else 1
 	#target_games = target_games
@@ -156,13 +172,16 @@ func start_round():
 	# (Re)start your round logic here—e.g. reposition players, unpause physics…
 
 func _on_player_out(player_id):
+	print(">>> PLAYER OUT:", player_id)
 	Globals.round_started = false
 	print("Player out: ", player_id)
 	
-	if match_over:
+	if match_over or round_ended:
 		return
 	wins[player_id] = wins.get(player_id, 0) + 1
 	
+	round_ended = true
+
 	# Update scoreboard labels
 	red_score.text  = str(wins[1])
 	blue_score.text = str(wins[2])
@@ -188,6 +207,7 @@ func _on_player_out(player_id):
 
 # Button callbacks
 func _on_retry_pressed():
+	print(">>> RETRY PRESSED")
 	match_over = false
 	btn_retry.disabled = true
 	btn_exit.disabled = true
@@ -231,3 +251,29 @@ func _on_exit_pressed():
 	# —or, if you have a menu UI you show, just toggle visibility there:
 	# $CanvasLayer/UI/TitleScreenUI.visible = true
 	# victory_ui.visible = false
+
+func spawn_coin():
+	if current_coin != null and current_coin.is_inside_tree():
+		# Coin already exists, do not spawn another
+		return
+
+	current_coin = CoinScene.instantiate()
+	var spawn_marker = coin_spawn_points[randi() % coin_spawn_points.size()]
+	current_coin.global_position = spawn_marker.global_position
+	add_child(current_coin)
+
+	current_coin.picked_up.connect(_on_coin_picked_up)
+
+func _on_coin_picked_up(player):
+	if player.stocks < max_stocks:
+		player.stocks += 1
+		update_health(player.id, player.stocks)
+
+	# Remove the coin reference as it was picked up
+	current_coin = null
+
+	# Wait a random time before spawning a new coin
+	var delay = randf_range(3.0, 6.0)
+	await get_tree().create_timer(delay).timeout
+
+	spawn_coin()

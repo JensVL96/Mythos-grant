@@ -143,8 +143,8 @@ texture_margin_bottom = 10.0
 script = ExtResource("1_3trnn")
 
 [node name="map" parent="." instance=ExtResource("6_q530o")]
-position = Vector2(-908, -896)
-scale = Vector2(1.5, 1.5)
+position = Vector2(-925, -925)
+scale = Vector2(1.55, 1.55)
 
 [node name="Template" type="Sprite2D" parent="."]
 visible = false
@@ -242,6 +242,15 @@ position = Vector2(363, 243)
 
 [node name="SpawnP3" type="Marker2D" parent="SpawnPoints"]
 position = Vector2(363, 243)
+
+[node name="MoneySpawn1" type="Marker2D" parent="SpawnPoints"]
+position = Vector2(68.5, -120)
+
+[node name="MoneySpawn2" type="Marker2D" parent="SpawnPoints"]
+position = Vector2(686, -241)
+
+[node name="MoneySpawn3" type="Marker2D" parent="SpawnPoints"]
+position = Vector2(-553, -241)
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
@@ -466,5 +475,6 @@ text = "Testing"
 [node name="StageMusic" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("19_7gcrm")
 autoplay = true
+bus = &"Music"
 
 [node name="InvulnTimer" type="Timer" parent="."]

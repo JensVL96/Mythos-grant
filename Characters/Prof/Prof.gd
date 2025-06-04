@@ -105,7 +105,7 @@ var color = Color(0, 0, 0)
 @onready var tilemap := get_parent().get_node('map')
 #@onready var sword = $Sword
 @onready var sprite := $Sprite
-
+@onready var coinParticles = $coinParticles
 @onready var landingSound = $Landing
 @onready var dashSound = $Dash
 
@@ -115,14 +115,30 @@ var is_invulnerable: bool = false
 var invuln_time_remaining: float = 0.0
 const INVULN_TIME := 0.5
 
-func take_damage():
+func take_damage(particle_amount: int = 5):
 	if is_invulnerable:
 		return
 	print("Player ", id, " took damage. Stocks left: ", stocks)
 	stocks -= 1
 	get_parent().update_health(id, stocks)
+	
+	# Spawn coins at player position
+	spawn_coins(particle_amount)
+	
 	if stocks <= 0:
 		emit_signal("stocks_depleted")
+
+func spawn_coins(amount: int):
+	coinParticles.amount = amount
+	
+	var material  = coinParticles.process_material as ParticleProcessMaterial
+	if material:
+		var grav_x = 98 * direction()  # Facing right or left
+		var grav_y = -98                # Gravity downwards
+		material.gravity = Vector3(grav_x, grav_y, 0)  # Note Vector3 here
+		
+	coinParticles.global_position = global_position
+	coinParticles.restart()
 
 func stop_movement():
 	velocity = Vector2.ZERO
@@ -236,8 +252,11 @@ func _ready() -> void:
 		sprite.scale = Vector2(0.15, 0.15)
 		anim.play("IDLE_BLUE")
 
+var last_pos: Vector2
+
 func _physics_process(delta: float) -> void:
 	if ignore_knockback_frames > 0:
+		#print("counting down knockback frames")
 		ignore_knockback_frames -= 1
 	if ignore_knockback_frames == 0:
 		respawned = false
@@ -247,6 +266,10 @@ func _physics_process(delta: float) -> void:
 	if invuln_time_remaining == 0.0 and is_invulnerable:
 		print("no more I-frames for player: " + str(id))
 		is_invulnerable = false
+		
+	if global_position.distance_to(last_pos) > 100:
+		print("Player", id, "jumped position!", last_pos, "->", global_position)
+	last_pos = global_position
 
 	#Debug
 	$Frames.text = str(frame)

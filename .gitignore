@@ -22,15 +22,16 @@ Thumbs.db
 
 # Files
 # Ignore everything under kenney_fantasy-ui-borders
-UI/themes/kenney_fantasy-ui-borders/*
+# UI/themes/kenney_fantasy-ui-borders/*
+# UI/themes/Input_prompts/*
 
 # But keep the PNG/Default/Border folder and its contents
-!UI/themes/kenney_fantasy-ui-borders/PNG/
-!UI/themes/kenney_fantasy-ui-borders/PNG/Default/
-!UI/themes/kenney_fantasy-ui-borders/PNG/Default/Border/
+# !UI/themes/kenney_fantasy-ui-borders/PNG/
+# !UI/themes/kenney_fantasy-ui-borders/PNG/Default/
+# !UI/themes/kenney_fantasy-ui-borders/PNG/Default/Border/
 
-Characters/Fox/*
-Hitbox/Hitbox.gd
-Hitbox/Hitbox.tscn
-Stages/Smashville/*
-tests/*
+# Characters/Fox/*
+# Hitbox/Hitbox.gd
+# Hitbox/Hitbox.tscn
+# Stages/Smashville/*
+# tests/*

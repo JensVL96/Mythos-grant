@@ -40,6 +40,6 @@ texture = ExtResource("8_63psr")
 
 [node name="VikingBg3" type="Sprite2D" parent="."]
 z_index = -10
-position = Vector2(670, 615)
-scale = Vector2(0.79, 0.79)
+position = Vector2(670, 611)
+scale = Vector2(0.809714, 0.79)
 texture = ExtResource("9_efxtb")

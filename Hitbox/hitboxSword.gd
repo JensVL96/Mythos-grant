@@ -152,14 +152,6 @@ func calculate_sword_direction(target_pos: Vector2) -> float:
 	var direction = (target_pos - pivot_point).normalized()
 	return atan2(direction.x, direction.y)
 
-#func handle_attack_tracking(delta: float) -> void:
-	#var opponent = find_nearest_opponent()
-	#if opponent:
-		#current_target_pos = current_target_pos.lerp(opponent.global_position, tracking_response * delta)
-		#var desired_angle = calculate_sword_direction(opponent.global_position)
-		#var angle_diff = fmod(desired_angle - angle + PI, PI*2) - PI
-		#angular_velocity += clamp(angle_diff * delta * tracking_response, -max_tracking_speed, max_tracking_speed)
-
 func apply_pendulum_physics(delta: float) -> void:
 	if !is_attacking || !is_holding_attack:
 		angular_acceleration = ((-gravity * delta) / arm_length) * sin(angle)
@@ -197,12 +189,16 @@ func _on_hitbox_body_entered(body: Node2D) -> void:
 	#recently_hit[body] = true
 	player_list.append(body)
 	
-	
+	print("applying knockback")
 	var charstate
 	charstate = body.get_node("StateMachine")
 	weight = body.weight
 	body.percentage += damage
-	body.take_damage()
+	if body.stocks <= 1:
+		# If this hit kills the player (stocks about to go 0), spawn 15 coins
+		body.take_damage(15)
+	else:
+		body.take_damage(5)
 	knockBackVal = knockback(percentage, damage, weight, kb_scaling, base_kb, 1)
 	s_angle(body)
 	charstate.state = charstate.states.HITFREEZE
@@ -235,12 +231,6 @@ func _on_hitbox_body_entered(body: Node2D) -> void:
 		owning_player.is_invulnerable = true
 	await get_tree().create_timer(hit_buffer_time).timeout
 	recently_hit.erase(body)
-		
-		#Globals.hitstun(hitlag(damage,hitlag_modifier), hitlag(damage,hitlag_modifier)/60)
-		#get_parent().hit_pause_dur = duration - framez
-		#get_parent().temp_pos = get_parent().position
-		#get_parent().temp_vel = get_parent().velocity
-		#charstate.state = charstate.states.HITSTUN
 
 ''' p: percentage, d: damage, w: weight, ks: kb_scaling, kb: base_kb, r: ratio'''
 func knockback(p, d, w, ks, kb, r):
@@ -261,147 +251,6 @@ func s_angle(body):
 	elif angle == -181:
 		angle = (-40 if !body.is_on_floor() else (-38 if knockBackVal > 28 else -25)) + 180
 
-#func get_horizontal_decay(kb_decay_angle):
-	#return abs(round(0.051 * cos(kb_decay_angle * ANGLE_CONVERSION) * 100000) / 100000 * 1000)
-	#
-#func get_vertical_decay(kb_decay_angle):
-	#return abs(round(0.051 * sin(kb_decay_angle * ANGLE_CONVERSION) * 100000) / 100000 * 1000)
-	#
-#func get_horizontal_velocity(knockback_vel, kb_vel_angle):
-	#return round((knockback_vel * 30 * cos(kb_vel_angle * ANGLE_CONVERSION)) * 100000) / 100000
-	#
-#func get_vertical_velocity(knockback_vel, kb_vel_angle):
-	#return round((knockback_vel * 30 * sin(kb_vel_angle * ANGLE_CONVERSION)) * 100000) / 100000	
-#
-#func _angle_flipper(body):
-	#var xangle
-	#if get_parent().direction() == -1:
-		#xangle = (-(((body.global_position.angle_to_point(body.get_parent().global_position))*180)/PI))
-	#else:
-		#xangle = (((body.global_position.angle_to_point(body.get_parent().global_position))*180)/PI)
-	#match angle_flipper:
-		#0: # Sends at the exact angle every time
-			#body.velocity.x = (get_horizontal_velocity(knockBackVal, -kb_angle))
-			#body.velocity.y = (get_vertical_velocity(knockBackVal, -kb_angle))
-			#body.hdecay = (get_horizontal_decay(-kb_angle))
-			#body.vdecay = (get_vertical_decay(kb_angle))
-		#1: # Sends away from center of enemy player
-			#if get_parent().direction() == -1:
-				#xangle = -(((self.global_position.angle_to_point(body.get_parent().global_position))*180)/PI)
-			#else:
-				#xangle = (((self.global_position.angle_to_point(body.get_parent().global_position))*180)/PI)
-			#body.velocity.x = (get_horizontal_velocity(knockBackVal, xangle+180))
-			#body.velocity.y = (get_vertical_velocity(knockBackVal, -xangle))
-			#body.hdecay = (get_horizontal_decay(kb_angle + 180))
-			#body.vdecay = (get_vertical_decay(xangle))
-		#2: # Sends towards center of enemy player
-			#if get_parent().direction() == -1:
-				#xangle = -(((body.get_parent().global_position.angle_to_point(self.global_position))*180)/PI)
-			#else:
-				#xangle = (((body.get_parent().global_position.angle_to_point(self.global_position))*180)/PI)
-			#body.velocity.x = (get_horizontal_velocity(knockBackVal, -xangle+180))
-			#body.velocity.y = (get_vertical_velocity(knockBackVal, -xangle))
-			#body.hdecay = (get_horizontal_decay(xangle + 180))
-			#body.vdecay = (get_vertical_decay(xangle))
-		#3: # horizontal knockback sends away from the center of the hitbox
-			#if get_parent().direction() == -1:
-				#xangle = (-(((body.global_position.angle_to_point(self.global_position))*180)/PI))+180
-			#else:
-				#xangle = (((body.global_position.angle_to_point(self.global_position))*180)/PI)
-			#body.velocity.x = (get_horizontal_velocity(knockBackVal, xangle))
-			#body.velocity.y = (get_vertical_velocity(knockBackVal, -kb_angle))
-			#body.hdecay = (get_horizontal_decay(xangle))
-			#body.vdecay = (get_vertical_decay(kb_angle))
-		#4: # horizontal knockback sends towards the center of the hitbox
-			#if get_parent().direction() == -1:
-				#xangle = -(((body.global_position.angle_to_point(self.global_position))*180)/PI)+180
-			#else:
-				#xangle = (((body.global_position.angle_to_point(self.global_position))*180)/PI)
-			#body.velocity.x = (get_horizontal_velocity(knockBackVal, -xangle*180))
-			#body.velocity.y = (get_vertical_velocity(knockBackVal, -kb_angle))
-			#body.hdecay = (get_horizontal_decay(kb_angle))
-			#body.vdecay = (get_vertical_decay(kb_angle))
-		#5: # horizontal knockback is reversed
-			#body.velocity.x = (get_horizontal_velocity(knockBackVal, kb_angle+180))
-			#body.velocity.y = (get_vertical_velocity(knockBackVal, -kb_angle))
-			#body.hdecay = (get_horizontal_decay(kb_angle+180))
-			#body.vdecay = (get_vertical_decay(kb_angle))
-		#6: # horizontal knockback sends away from the enemy player
-			#body.velocity.x = (get_horizontal_velocity(knockBackVal, xangle))
-			#body.velocity.y = (get_vertical_velocity(knockBackVal, -kb_angle))
-			#body.hdecay = (get_horizontal_decay(xangle))
-			#body.vdecay = (get_vertical_decay(kb_angle))
-		#7: # horizontal knockback sends towards the center of the hitbox
-			#body.velocity.x = (get_horizontal_velocity(knockBackVal, -xangle+180))
-			#body.velocity.y = (get_vertical_velocity(knockBackVal, -kb_angle))
-			#body.hdecay = (get_horizontal_decay(kb_angle))
-			#body.vdecay = (get_vertical_decay(kb_angle))
-#
-#func _angle_flipper2(body_vel:Vector2, body_position:Vector2, hdecay=0, vdecay=0):
-	#var xangle
-	#if get_parent().direction() == -1:
-		#xangle = (-(((body_position.angle_to_point(get_parent().global_position))*180)/PI))
-	#else:
-		#xangle = (((body_position.angle_to_point(get_parent().global_position))*180)/PI)
-	#match angle_flipper:
-		#0:
-			#body_vel.x = (get_horizontal_velocity(knockBackVal, -angle))
-			#body_vel.y = (get_vertical_velocity(knockBackVal, -angle))
-			#hdecay = (get_horizontal_decay(angle + 180))
-			#vdecay = (get_vertical_decay(angle + 180))
-			#return ([body_vel.x, body_vel.y, hdecay, vdecay])
-		#1: # Sends away from center of enemy player
-			#if get_parent().direction() == -1:
-				#xangle = -(((self.global_position.angle_to_point(body_position)*180))/PI)
-			#else:
-				#xangle = (((self.global_position.angle_to_point(body_position))*180)/PI)
-			#body_vel.x = (get_horizontal_velocity(knockBackVal, xangle+180))
-			#body_vel.y = (get_vertical_velocity(knockBackVal, -xangle))
-			#hdecay = (get_horizontal_decay(angle + 180))
-			#vdecay = (get_vertical_decay(xangle))
-		#2: # Sends towards center of enemy player
-			#if get_parent().direction() == -1:
-				#xangle = -(((body_position.angle_to_point(self.global_position))*180)/PI)
-			#else:
-				#xangle = (((body_position.angle_to_point(self.global_position))*180)/PI)
-			#body_vel.x = (get_horizontal_velocity(knockBackVal, -xangle+180))
-			#body_vel.y = (get_vertical_velocity(knockBackVal, -xangle))
-			#hdecay = (get_horizontal_decay(xangle + 180))
-			#vdecay = (get_vertical_decay(xangle))
-		#3: # horizontal knockback sends away from the center of the hitbox
-			#if get_parent().direction() == -1:
-				#xangle = (-(((body_position.angle_to_point(self.global_position))*180)/PI))+180
-			#else:
-				#xangle = (((body_position.angle_to_point(self.global_position))*180)/PI)
-			#body_vel.x = (get_horizontal_velocity(knockBackVal, xangle))
-			#body_vel.y = (get_vertical_velocity(knockBackVal, -angle))
-			#hdecay = (get_horizontal_decay(xangle))
-			#vdecay = (get_vertical_decay(angle))
-		#4: # horizontal knockback sends towards the center of the hitbox
-			#if get_parent().direction() == -1:
-				#xangle = -(((body_position.angle_to_point(self.global_position))*180)/PI)+180
-			#else:
-				#xangle = (((body_position.angle_to_point(self.global_position))*180)/PI)
-			#body_vel.x = (get_horizontal_velocity(knockBackVal, -xangle*180))
-			#body_vel.y = (get_vertical_velocity(knockBackVal, -angle))
-			#hdecay = (get_horizontal_decay(angle))
-			#vdecay = (get_vertical_decay(angle))
-		#5: # horizontal knockback is reversed
-			#body_vel.x = (get_horizontal_velocity(knockBackVal, angle+180))
-			#body_vel.y = (get_vertical_velocity(knockBackVal, -angle))
-			#hdecay = (get_horizontal_decay(angle+180))
-			#vdecay = (get_vertical_decay(angle))
-		#6: # horizontal knockback sends away from the enemy player
-			#body_vel.x = (get_horizontal_velocity(knockBackVal, xangle))
-			#body_vel.y = (get_vertical_velocity(knockBackVal, -angle))
-			#hdecay = (get_horizontal_decay(xangle))
-			#vdecay = (get_vertical_decay(angle))
-		#7: # horizontal knockback sends towards the center of the hitbox
-			#body_vel.x = (get_horizontal_velocity(knockBackVal, -xangle+180))
-			#body_vel.y = (get_vertical_velocity(knockBackVal, -angle))
-			#hdecay = (get_horizontal_decay(angle))
-			#vdecay = (get_vertical_decay(angle))
-
 func _get_physics_values(kb_val: float, vel_x: float, vel_y: float, decay_h: float, decay_v: float) -> Array:
 	return [
 		round((kb_val * 30 * cos(vel_x * ANGLE_CONVERSION)) * 100000) / 100000,  # vel_x
@@ -409,41 +258,6 @@ func _get_physics_values(kb_val: float, vel_x: float, vel_y: float, decay_h: flo
 		abs(round(0.051 * cos(decay_h * ANGLE_CONVERSION) * 100000) / 100000 * 1000),  # hdecay
 		abs(round(0.051 * sin(decay_v * ANGLE_CONVERSION) * 100000) / 100000 * 1000)   # vdecay
 	]
-
-func _angle_flipper(body):
-	var dir = get_parent().direction()
-	var base_angle = (body.global_position.angle_to_point(body.get_parent().global_position)) * 180/PI
-	var base_angle_2 = ((self.global_position.angle_to_point(body.get_parent().global_position))*180)/PI
-	var base_angle_3 = ((body.get_parent().global_position.angle_to_point(self.global_position))*180)/PI
-	var xangle = dir * base_angle
-	
-	var result: Array
-	match angle_flipper:
-		0:
-			result = _get_physics_values(knockBackVal, -kb_angle, -kb_angle, -kb_angle, kb_angle)
-		1:# Sends away from center of enemy player
-			xangle = -base_angle_2 if get_parent().direction() == -1 else base_angle_2
-			result = _get_physics_values(knockBackVal, xangle+180, -xangle, kb_angle+180, xangle)
-		2: # Sends towards center of enemy player
-			xangle = -base_angle_3 if get_parent().direction() == -1 else base_angle_3
-			result = _get_physics_values(knockBackVal, -xangle+180, -xangle, xangle+180, xangle)
-		3: # horizontal knockback sends away from the center of the hitbox
-			xangle = -base_angle_3+180 if get_parent().direction() == -1 else base_angle_3
-			result = _get_physics_values(knockBackVal, xangle, -kb_angle, xangle, kb_angle)
-		4:# horizontal knockback sends towards the center of the hitbox
-			xangle = -base_angle_3+180 if get_parent().direction() == -1 else base_angle_3
-			result = _get_physics_values(knockBackVal, -xangle*180, -kb_angle, kb_angle, kb_angle)
-		5:# horizontal knockback is reversed
-			result = _get_physics_values(knockBackVal, kb_angle+180, -kb_angle, kb_angle+180, kb_angle)
-		6: # horizontal knockback sends away from the enemy player
-			result = _get_physics_values(knockBackVal, xangle, -kb_angle, xangle, kb_angle)
-		7:# horizontal knockback sends towards the center of the hitbox
-			result = _get_physics_values(knockBackVal, -xangle+180, -kb_angle, kb_angle, kb_angle)
-	
-	body.velocity.x = result[0]
-	body.velocity.y = result[1]
-	body.hdecay = result[2]
-	body.vdecay = result[3]
 
 func swing_momentum(body_vel: Vector2, body_position: Vector2, hdecay=0, vdecay=0, is_grounded=true):
 	var hitbox_center = global_position
@@ -472,54 +286,6 @@ func swing_momentum(body_vel: Vector2, body_position: Vector2, hdecay=0, vdecay=
 		angle_deg, angle_deg, angle_deg, angle_deg
 	)
 
-	body_vel.x = result[0]
-	body_vel.y = result[1]
-	hdecay = result[2]
-	vdecay = result[3]
-	return [body_vel.x, body_vel.y, hdecay, vdecay]
-
-
-func _angle_flipper2(body_vel: Vector2, body_position: Vector2, hdecay = 0, vdecay = 0):
-	var dir = get_parent().direction()
-	var angle_to_parent = (body_position.angle_to_point(get_parent().global_position)) * 180/PI
-	var angle_from_self_to_body = (self.global_position.angle_to_point(body_position)) * 180/PI
-	var angle_from_body_to_self = (body_position.angle_to_point(self.global_position)) * 180/PI
-	
-	var xangle = dir * angle_to_parent
-	var result: Array
-	
-	match angle_flipper:
-		0:  # Exact angle every time
-			result = _get_physics_values(knockBackVal, -angle, -angle, angle + 180, angle + 180)
-		1:  # Away from enemy center
-			xangle = angle_from_self_to_body if dir == -1 else -angle_from_self_to_body
-			result = _get_physics_values(knockBackVal, xangle + 180, -xangle, angle + 180, xangle)
-		2:  # Towards enemy center
-			xangle = angle_from_body_to_self if dir == -1 else -angle_from_body_to_self
-			result = _get_physics_values(knockBackVal, -xangle + 180, -xangle, xangle + 180, xangle)
-		3:  # Away from hitbox center
-			var hitbox_center = self.global_position
-			var body_pos = body_position
-			var direction_vector = (body_pos - hitbox_center).normalized()
-			var away_angle = rad_to_deg(direction_vector.angle())
-			
-			result = _get_physics_values(
-				knockBackVal,
-				away_angle,     # X velocity angle (directly away)
-				away_angle,     # Y velocity angle (same as x for consistency)
-				away_angle,     # Horizontal decay
-				away_angle      # Vertical decay
-			)
-		4:  # Towards hitbox center
-			xangle = angle_from_body_to_self + 180 if dir == -1 else -angle_from_body_to_self
-			result = _get_physics_values(knockBackVal, -xangle * 180, -angle, angle, angle)
-		5:  # Horizontal reversed
-			result = _get_physics_values(knockBackVal, angle + 180, -angle, angle + 180, angle)
-		6:  # Away from enemy player
-			result = _get_physics_values(knockBackVal, xangle, -angle, xangle, angle)
-		7:  # Towards hitbox center (alternate)
-			result = _get_physics_values(knockBackVal, -xangle + 180, -angle, angle, angle)
-	
 	body_vel.x = result[0]
 	body_vel.y = result[1]
 	hdecay = result[2]

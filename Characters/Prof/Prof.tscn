@@ -1,4 +1,4 @@
-[gd_scene load_steps=48 format=3 uid="uid://bltx7b8frjhjd"]
+[gd_scene load_steps=50 format=3 uid="uid://bltx7b8frjhjd"]
 
 [ext_resource type="Script" path="res://Characters/Prof/Prof.gd" id="1_4paqg"]
 [ext_resource type="PackedScene" uid="uid://imkk6qltwdef" path="res://Hitbox/HitboxSword.tscn" id="2_a88d7"]
@@ -11,6 +11,7 @@
 [ext_resource type="Texture2D" uid="uid://brqx56ngdklvu" path="res://Characters/Prof/Sprites/DefaultBlue.png" id="6_ho81m"]
 [ext_resource type="Texture2D" uid="uid://b2e7mt0xnr2yw" path="res://Characters/Prof/Sprites/DyingSpritesRed.png" id="6_ieakl"]
 [ext_resource type="Texture2D" uid="uid://dn2u4bbecw7br" path="res://Characters/Prof/Sprites/DefaultRed.png" id="7_270ic"]
+[ext_resource type="Texture2D" uid="uid://bdcu0vdwdl2am" path="res://UI/Common/Particles/coinFrame.png" id="12_dtbpc"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_hy6eo"]
 atlas = ExtResource("4_pj82m")
@@ -361,6 +362,16 @@ base_font = SubResource("SystemFont_87bpo")
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_wvho2"]
 size = Vector2(85, 47)
 
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_pbu43"]
+particle_flag_disable_z = true
+emission_shape_offset = Vector3(-7, 10, 0)
+gravity = Vector3(-98, -98, 0)
+radial_accel_min = -100.0
+radial_accel_max = 100.0
+scale_min = 0.08
+scale_max = 0.08
+scale_over_velocity_max = 0.5
+
 [node name="PROF" type="CharacterBody2D"]
 collision_mask = 6
 slide_on_ceiling = false
@@ -454,6 +465,18 @@ disabled = true
 
 [node name="Landing" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("5_e546o")
+bus = &"Sound"
 
 [node name="Dash" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("6_f504o")
+bus = &"Sound"
+
+[node name="coinParticles" type="GPUParticles2D" parent="."]
+emitting = false
+amount = 15
+process_material = SubResource("ParticleProcessMaterial_pbu43")
+texture = ExtResource("12_dtbpc")
+lifetime = 0.8
+one_shot = true
+explosiveness = 0.5
+fixed_fps = 60

@@ -30,30 +30,39 @@ shape = SubResource("RectangleShape2D_4c4og")
 
 [node name="swordClash" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("3_sldcb")
+bus = &"Sound"
 
 [node name="coin1" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("4_su5mk")
+bus = &"Sound"
 
 [node name="coin2" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("5_tafg7")
+bus = &"Sound"
 
 [node name="coin3" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("6_qv44g")
+bus = &"Sound"
 
 [node name="coin4" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("7_ldwt4")
+bus = &"Sound"
 
 [node name="coin5" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("8_8bsjw")
+bus = &"Sound"
 
 [node name="coin6" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("9_4ukip")
+bus = &"Sound"
 
 [node name="coin7" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("10_yjpew")
+bus = &"Sound"
 
 [node name="coinDeath" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("11_2al40")
+bus = &"Sound"
 
 [connection signal="area_entered" from="Hitbox" to="." method="_on_sword_clash"]
 [connection signal="body_entered" from="Hitbox" to="." method="_on_hitbox_body_entered"]

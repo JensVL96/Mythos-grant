@@ -191,9 +191,10 @@ collision_mask = 65536
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Pointer"]
 shape = SubResource("RectangleShape2D_nra82")
 
-[node name="MusicPlayer" type="AudioStreamPlayer2D" parent="."]
+[node name="Music" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("7_egggi")
 volume_db = 20.0
+bus = &"Music"
 
 [node name="Tutorial" type="TextureRect" parent="."]
 visible = false

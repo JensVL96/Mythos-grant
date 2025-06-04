@@ -1,6 +1,6 @@
 extends Control
 
-@onready var MusicPlayer = $MusicPlayer
+@onready var Music = $Music
 @onready var getPointer = $Pointer
 @onready var buttons = [
 	$HBoxContainer/VBoxContainer/Play,
@@ -10,12 +10,12 @@ extends Control
 
 var ui_navigator
 
-var volume = -40  # Start low
-
 func _ready():
-	MusicPlayer.volume_db = volume
-	MusicPlayer.play()
-	fade_in_music()
+	#MusicPlayer.volume_db = volume
+	#MusicPlayer.play()
+	#fade_in_music()
+	
+	GlobalMusic.ensure_playing()
 
 	var pointer_positions = [
 		Vector2(1100, 440), # PLAY
@@ -27,13 +27,12 @@ func _ready():
 	add_child(ui_navigator)
 	ui_navigator.connect("option_selected", Callable(self, "_on_option_selected"))
 
-func fade_in_music():
-	var tween = create_tween()
-	tween.tween_property(MusicPlayer, "volume_db", 0, 3.0)  # Fade to 0dB in 3 seconds
-
 func _on_option_selected(index):
 	match index:
 		0: # PLAY
+			await GlobalMusic.fade_out_music()
+			GlobalMusic.music_player.stop()
+			GlobalMusic.has_faded_in = false  # Reset for future menu entries
 			get_tree().change_scene_to_file("res://Stages/test_stage.tscn")
 		1: # OPTIONS
 			print("Options selected")

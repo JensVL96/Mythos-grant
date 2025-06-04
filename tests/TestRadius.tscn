@@ -1,0 +1,16 @@
+[gd_scene load_steps=4 format=3 uid="uid://cyfbyr433ht0a"]
+
+[ext_resource type="Script" path="res://tests/test_radius.gd" id="1_642oy"]
+[ext_resource type="Texture2D" uid="uid://dvnqrjw8phdyh" path="res://Swords/Sword.png" id="1_y1fu3"]
+[ext_resource type="Script" path="res://swordTest.gd" id="2_i1hgp"]
+
+[node name="Node2D" type="Node2D"]
+script = ExtResource("1_642oy")
+
+[node name="Sword" type="Sprite2D" parent="."]
+texture = ExtResource("1_y1fu3")
+script = ExtResource("2_i1hgp")
+
+[node name="Line2D" type="Line2D" parent="."]
+position = Vector2(599, 368)
+points = PackedVector2Array(0, 0, 0, -100)
