@@ -1,9 +1,7 @@
-[gd_scene load_steps=31 format=3 uid="uid://ch6h20ky17yve"]
+[gd_scene load_steps=28 format=3 uid="uid://ch6h20ky17yve"]
 
 [ext_resource type="Script" path="res://Stages/test_stage.gd" id="1_3trnn"]
-[ext_resource type="Texture2D" uid="uid://bbdyej4mf1pri" path="res://Stages/Smashville/1.png" id="1_gup5q"]
 [ext_resource type="Script" path="res://Stages/StageCamera.gd" id="3_amvbu"]
-[ext_resource type="PackedScene" uid="uid://co14ctvb1mvl2" path="res://Stages/Stage Assets/Ledge.tscn" id="4_y2bko"]
 [ext_resource type="PackedScene" uid="uid://bltx7b8frjhjd" path="res://Characters/Prof/Prof.tscn" id="6_duald"]
 [ext_resource type="PackedScene" uid="uid://map" path="res://Stages/Norse/map/Map.tscn" id="6_q530o"]
 [ext_resource type="Texture2D" uid="uid://bjlx58f6mfe8c" path="res://UI/healthbars/blue_health_1_small.png" id="7_3c4cd"]
@@ -23,9 +21,6 @@
 [ext_resource type="Script" path="res://Stages/victoryScreen.gd" id="19_m7boj"]
 [ext_resource type="ButtonGroup" uid="uid://b4a35pngy8670" path="res://Stages/Games.tres" id="20_f6e5i"]
 [ext_resource type="SystemFont" uid="uid://cej7y0pr4hijb" path="res://UI/Titlescreen/buttonFont.tres" id="20_xlmo6"]
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_al06n"]
-size = Vector2(962, 38)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_w4f8t"]
 animations = [{
@@ -146,44 +141,6 @@ script = ExtResource("1_3trnn")
 position = Vector2(-925, -925)
 scale = Vector2(1.55, 1.55)
 
-[node name="Template" type="Sprite2D" parent="."]
-visible = false
-scale = Vector2(2, 2)
-texture = ExtResource("1_gup5q")
-
-[node name="Floor" type="StaticBody2D" parent="."]
-visible = false
-position = Vector2(0, 230)
-collision_layer = 0
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Floor"]
-shape = SubResource("RectangleShape2D_al06n")
-
-[node name="Label" type="Label" parent="Floor"]
-offset_left = 33.0
-offset_top = -12.0
-offset_right = 73.0
-offset_bottom = 11.0
-text = "Floor"
-metadata/_edit_use_anchors_ = true
-
-[node name="Wall" type="StaticBody2D" parent="."]
-visible = false
-position = Vector2(1, 292)
-collision_layer = 0
-
-[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Wall"]
-position = Vector2(-788, -743)
-polygon = PackedVector2Array(1269, 700, 1210, 756, 1126, 794, 447, 795, 362, 756, 305, 700, 510.39, 700)
-
-[node name="Label" type="Label" parent="Wall"]
-offset_left = 30.0
-offset_top = -7.0
-offset_right = 64.0
-offset_bottom = 16.0
-text = "Wall"
-metadata/_edit_use_anchors_ = true
-
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2(42, 25)
 limit_left = -1140
@@ -197,32 +154,6 @@ drag_right_margin = 0.0
 editor_draw_limits = true
 editor_draw_drag_margin = true
 script = ExtResource("3_amvbu")
-
-[node name="Ledge" parent="." instance=ExtResource("4_y2bko")]
-visible = false
-position = Vector2(482, 230)
-ledge_side = "Right"
-
-[node name="Ledge2" parent="." instance=ExtResource("4_y2bko")]
-visible = false
-position = Vector2(-481, 230)
-
-[node name="Ledge3" parent="." instance=ExtResource("4_y2bko")]
-visible = false
-position = Vector2(172, -27)
-
-[node name="Ledge4" parent="." instance=ExtResource("4_y2bko")]
-visible = false
-position = Vector2(247, -27)
-ledge_side = "Right"
-
-[node name="Main Stage 1" type="Sprite2D" parent="."]
-visible = false
-z_index = -2
-
-[node name="Main Stage 2" type="Sprite2D" parent="."]
-visible = false
-z_index = 3
 
 [node name="PROF" parent="." groups=["players"] instance=ExtResource("6_duald")]
 position = Vector2(-228, 145)
@@ -433,14 +364,6 @@ toggle_mode = true
 button_group = ExtResource("20_f6e5i")
 text = "5"
 
-[node name="SpinBox" type="SpinBox" parent="CanvasLayer/UI/VictoryScreen/VBoxContainer/GamesContainer"]
-visible = false
-layout_mode = 2
-min_value = 1.0
-max_value = 5.0
-step = 2.0
-value = 1.0
-
 [node name="HBoxContainer2" type="HBoxContainer" parent="CanvasLayer/UI/VictoryScreen/VBoxContainer"]
 layout_mode = 2
 alignment = 1
@@ -464,13 +387,6 @@ theme_override_fonts/font = ExtResource("20_xlmo6")
 theme_override_font_sizes/font_size = 16
 theme_override_styles/normal = SubResource("StyleBoxTexture_7ktrx")
 text = "Exit to menu"
-
-[node name="Label" type="Label" parent="CanvasLayer"]
-visible = false
-offset_right = 40.0
-offset_bottom = 23.0
-theme_override_font_sizes/font_size = 40
-text = "Testing"
 
 [node name="StageMusic" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("19_7gcrm")

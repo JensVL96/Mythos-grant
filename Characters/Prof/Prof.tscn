@@ -1,13 +1,13 @@
-[gd_scene load_steps=50 format=3 uid="uid://bltx7b8frjhjd"]
+[gd_scene load_steps=49 format=3 uid="uid://bltx7b8frjhjd"]
 
 [ext_resource type="Script" path="res://Characters/Prof/Prof.gd" id="1_4paqg"]
 [ext_resource type="PackedScene" uid="uid://imkk6qltwdef" path="res://Hitbox/HitboxSword.tscn" id="2_a88d7"]
 [ext_resource type="Script" path="res://Characters/Prof/state_machineProf.gd" id="3_t1ky2"]
 [ext_resource type="Texture2D" uid="uid://cxv15wx0pl7kk" path="res://Characters/Prof/Sprites/Default.png" id="4_5jgtt"]
 [ext_resource type="Texture2D" uid="uid://dqaxyi2ib060j" path="res://Characters/Prof/Sprites/DyingSprites (2).png" id="4_pj82m"]
-[ext_resource type="AudioStream" uid="uid://bj2wmqoos0r0o" path="res://sounds/Jump-Landing.wav" id="5_e546o"]
+[ext_resource type="AudioStream" uid="uid://bj2wmqoos0r0o" path="res://sounds/Movement/Jump-Landing.wav" id="5_e546o"]
 [ext_resource type="Texture2D" uid="uid://bwfgyg36ku0d6" path="res://Characters/Prof/Sprites/DyingSpritesBlue.png" id="5_n14ou"]
-[ext_resource type="AudioStream" uid="uid://ca6xli3v63nq6" path="res://sounds/Dash.wav" id="6_f504o"]
+[ext_resource type="AudioStream" uid="uid://ca6xli3v63nq6" path="res://sounds/Movement/Dash.wav" id="6_f504o"]
 [ext_resource type="Texture2D" uid="uid://brqx56ngdklvu" path="res://Characters/Prof/Sprites/DefaultBlue.png" id="6_ho81m"]
 [ext_resource type="Texture2D" uid="uid://b2e7mt0xnr2yw" path="res://Characters/Prof/Sprites/DyingSpritesRed.png" id="6_ieakl"]
 [ext_resource type="Texture2D" uid="uid://dn2u4bbecw7br" path="res://Characters/Prof/Sprites/DefaultRed.png" id="7_270ic"]
@@ -359,9 +359,6 @@ multichannel_signed_distance_field = true
 [sub_resource type="FontVariation" id="FontVariation_m7rmm"]
 base_font = SubResource("SystemFont_87bpo")
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_wvho2"]
-size = Vector2(85, 47)
-
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_pbu43"]
 particle_flag_disable_z = true
 emission_shape_offset = Vector3(-7, 10, 0)
@@ -409,21 +406,8 @@ target_position = Vector2(0, 10)
 collision_mask = 6
 hit_from_inside = true
 
-[node name="Ledge_Grab_F" type="RayCast2D" parent="Raycasts"]
-position = Vector2(18, -7)
-scale = Vector2(3, 3)
-target_position = Vector2(20, 0)
-collision_mask = 8
-hit_from_inside = true
-
-[node name="Ledge_Grab_B" type="RayCast2D" parent="Raycasts"]
-position = Vector2(0, -32)
-scale = Vector2(3, 3)
-target_position = Vector2(-11, 0)
-collision_mask = 8
-hit_from_inside = true
-
 [node name="Frames" type="Label" parent="."]
+visible = false
 offset_left = -36.0
 offset_top = -94.0
 offset_right = 36.0
@@ -436,6 +420,7 @@ text = "45"
 horizontal_alignment = 1
 
 [node name="State" type="Label" parent="."]
+visible = false
 offset_left = -36.0
 offset_top = -71.0
 offset_right = 36.0
@@ -447,6 +432,7 @@ text = "Test"
 horizontal_alignment = 1
 
 [node name="Health" type="Label" parent="."]
+visible = false
 offset_left = 48.0
 offset_top = -79.0
 offset_right = 120.0
@@ -456,12 +442,6 @@ theme_override_constants/outline_size = 4
 theme_override_fonts/font = SubResource("FontVariation_m7rmm")
 text = "Health"
 horizontal_alignment = 1
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-visible = false
-position = Vector2(-132, -2)
-shape = SubResource("RectangleShape2D_wvho2")
-disabled = true
 
 [node name="Landing" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("5_e546o")

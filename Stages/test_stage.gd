@@ -114,7 +114,7 @@ func _ready():
 	start_round()
 
 func start_round():
-	print(">>> START ROUND")
+	#print(">>> START ROUND")
 	round_ended = false
 	# Spawn the first coin for this round
 	#randomize()
@@ -172,9 +172,9 @@ func start_round():
 	# (Re)start your round logic here—e.g. reposition players, unpause physics…
 
 func _on_player_out(player_id):
-	print(">>> PLAYER OUT:", player_id)
+	#print(">>> PLAYER OUT:", player_id)
 	Globals.round_started = false
-	print("Player out: ", player_id)
+	#print("Player out: ", player_id)
 	
 	if match_over or round_ended:
 		return
@@ -207,7 +207,7 @@ func _on_player_out(player_id):
 
 # Button callbacks
 func _on_retry_pressed():
-	print(">>> RETRY PRESSED")
+	#print(">>> RETRY PRESSED")
 	match_over = false
 	btn_retry.disabled = true
 	btn_exit.disabled = true

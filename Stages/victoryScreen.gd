@@ -19,7 +19,7 @@ func _ready():
 func _on_option_selected(index):
 	match index:
 		0: # Retry button
-			get_tree().change_scene_to_file("res://Stages/test_stage.tscn")
+			get_tree().change_scene_to_file("res://Stages/Test stage.tscn")
 		1: # Exit button
 			get_tree().quit()
 

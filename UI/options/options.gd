@@ -37,7 +37,7 @@ func _ready() -> void:
 	volume_slider.custom_minimum_size = Vector2(200, 0)
 
 func _on_fullscreen_toggled(button_pressed: bool) -> void:
-	print("Toggled fullscreen to: ", button_pressed)
+	#print("Toggled fullscreen to: ", button_pressed)
 	if button_pressed:
 		DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_FULLSCREEN)
 	else:

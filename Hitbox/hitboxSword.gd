@@ -171,25 +171,25 @@ func update_sword_position() -> void:
 
 func _on_hitbox_body_entered(body: Node2D) -> void:
 	if body == owning_player:
-		print("Skipping: hit self")
+		#print("Skipping: hit self")
 		return
 		
 	if body.invuln_time_remaining > 0.0:
-		print("Skipping: still invulnerable (", body.invuln_time_remaining, ")")
+		#print("Skipping: still invulnerable (", body.invuln_time_remaining, ")")
 		return
 
 	if recently_hit.has(body):
-		print("Skipping: recently hit")
+		#print("Skipping: recently hit")
 		return
 		
 	if body.respawned:
-		print("Skipping: body is respawning")
+		#print("Skipping: body is respawning")
 		return
 		
 	#recently_hit[body] = true
 	player_list.append(body)
 	
-	print("applying knockback")
+	#print("applying knockback")
 	var charstate
 	charstate = body.get_node("StateMachine")
 	weight = body.weight

@@ -61,14 +61,6 @@ position = Vector2(960, 540)
 scale = Vector2(1.25, 1.05469)
 texture = ExtResource("2_udosp")
 
-[node name="Label" type="Label" parent="."]
-visible = false
-layout_mode = 0
-offset_right = 526.0
-offset_bottom = 283.0
-text = "Title
-"
-
 [node name="HBoxContainer" type="HBoxContainer" parent="."]
 layout_mode = 1
 anchors_preset = 8
@@ -142,12 +134,6 @@ shape = SubResource("RectangleShape2D_4heeo")
 custom_minimum_size = Vector2(100, 10)
 layout_mode = 2
 alignment = 1
-
-[node name="Volume" type="Label" parent="HBoxContainer/VBoxContainer/HBoxContainer"]
-visible = false
-layout_mode = 2
-theme_override_font_sizes/font_size = 40
-text = "Music"
 
 [node name="VolumeSlider" type="HSlider" parent="HBoxContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2

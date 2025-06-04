@@ -1,5 +1,7 @@
 extends Button
+
 signal hovered
+
 @export var path = 'res://Stages/Test stage.tscn'
 @onready var tutorial = $"../../../Tutorial"
 
@@ -13,14 +15,14 @@ func _on_pressed():
 	if tutorial:
 		tutorial.visible = true
 
-func _on_Area2D_area_entered(area):
+func _on_Area2D_area_entered(_area):
 	grab_focus()
 	#emit_signal("focus_entered")
 
 func _ready():
 	$Area2D.connect("area_entered", Callable(self, "_on_area_entered"))
 
-func _on_area_entered(area):
+func _on_area_entered(_area):
 	emit_signal("hovered")
 
 #func _on_Area2D_area_exited(area):
@@ -35,7 +37,7 @@ func _on_Button_mouse_exited():
 var can_continue = true
 var continue_cooldown = 0.3 # 300ms cooldown to prevent accidental double skips
 
-func _process(delta):
+func _process(_delta):
 	# Check if tutorial is visible and handle any input to change scene
 	if tutorial and tutorial.visible:
 		if can_continue and (Input.is_action_just_pressed("ui_accept") or Input.is_anything_pressed()):

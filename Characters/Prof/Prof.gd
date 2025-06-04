@@ -97,10 +97,9 @@ var color = Color(0, 0, 0)
 #@onready var state_machine = $StateMachine as StateMachine
 #@onready var frames_label = $Frames  # Label node for frames
 @onready var state_label = $State   # Label node for state
+var facing = 1  # 1 for right, -1 for left
 @onready var GroundL = get_node('Raycasts/GroundL')
 @onready var GroundR = get_node('Raycasts/GroundR')
-@onready var Ledge_Grab_F = get_node('Raycasts/Ledge_Grab_F')
-@onready var Ledge_Grab_B = get_node('Raycasts/Ledge_Grab_B')
 @onready var anim = $Sprite
 @onready var tilemap := get_parent().get_node('map')
 #@onready var sword = $Sword
@@ -118,7 +117,7 @@ const INVULN_TIME := 0.5
 func take_damage(particle_amount: int = 5):
 	if is_invulnerable:
 		return
-	print("Player ", id, " took damage. Stocks left: ", stocks)
+	#print("Player ", id, " took damage. Stocks left: ", stocks)
 	stocks -= 1
 	get_parent().update_health(id, stocks)
 	
@@ -183,22 +182,14 @@ func _hit_pause(delta):
 		hit_pause = 0
 
 func turn(turnDirection: bool):
-	var dir = 0
 	if turnDirection:
-		dir = -1
+		facing = -1
 	else:
-		dir = 1
+		facing = 1
 	$Sprite.set_flip_h(turnDirection)
-	Ledge_Grab_F.target_position = Vector2(dir*abs(Ledge_Grab_F.target_position.x), Ledge_Grab_F.target_position.y)
-	Ledge_Grab_F.position.x = dir * abs(Ledge_Grab_F.position.x)
-	Ledge_Grab_B.position.x = dir * abs(Ledge_Grab_B.position.x)
-	Ledge_Grab_B.target_position = Vector2(-dir*abs(Ledge_Grab_B.target_position.x), Ledge_Grab_B.target_position.y)
 	
-func direction():
-	if Ledge_Grab_F.target_position.x > 0:
-		return 1
-	else:
-		return -1
+func direction() -> int:
+	return facing
 	# Returns 1 if facing right, -1 if facing left
 	#return -1 if $Sprite.flip_h else 1
 
@@ -231,9 +222,9 @@ func is_on_platform() -> bool:
 	for i in range(get_slide_collision_count()):
 		var collision = get_slide_collision(i)
 		var collider = collision.get_collider()
-		print("Collider: ", collider, ", groups: ", collider.get_groups() if collider else "None")
+		#print("Collider: ", collider, ", groups: ", collider.get_groups() if collider else "None")
 		if collider and collider.name == "Platforms_0":
-			print("Colliding with platform")
+			#print("Colliding with platform")
 			return true
 	return false
 
@@ -264,11 +255,12 @@ func _physics_process(delta: float) -> void:
 	if invuln_time_remaining > 0.0:
 		invuln_time_remaining = max(invuln_time_remaining - delta, 0.0)
 	if invuln_time_remaining == 0.0 and is_invulnerable:
-		print("no more I-frames for player: " + str(id))
+		#print("no more I-frames for player: " + str(id))
 		is_invulnerable = false
 		
 	if global_position.distance_to(last_pos) > 100:
-		print("Player", id, "jumped position!", last_pos, "->", global_position)
+		pass
+		#print("Player", id, "jumped position!", last_pos, "->", global_position)
 	last_pos = global_position
 
 	#Debug

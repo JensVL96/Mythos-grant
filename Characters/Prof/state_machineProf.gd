@@ -697,10 +697,10 @@ func enter_state(new_state, _old_state):
 			parent.anim.frame = 0
 			parent.sprite.scale = Vector2(0.15, 0.15)
 			if parent.id == 1:
-				print("Blue is dying: " + str(parent.id))
+				#print("Blue is dying: " + str(parent.id))
 				parent.play_animation("Death_red")
 			else:
-				print("Red is dying: " + str(parent.id))
+				#print("Red is dying: " + str(parent.id))
 				parent.play_animation("Death_blue")
 			parent.state_label.text = str("DEATH")
 		states.AIRDASH:

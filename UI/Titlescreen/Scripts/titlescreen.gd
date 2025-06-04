@@ -33,8 +33,9 @@ func _on_option_selected(index):
 			await GlobalMusic.fade_out_music()
 			GlobalMusic.music_player.stop()
 			GlobalMusic.has_faded_in = false  # Reset for future menu entries
-			get_tree().change_scene_to_file("res://Stages/test_stage.tscn")
+			get_tree().change_scene_to_file("res://Stages/Test stage.tscn")
 		1: # OPTIONS
-			print("Options selected")
+			pass
+			#print("Options selected")
 		2: # EXIT
 			get_tree().quit()

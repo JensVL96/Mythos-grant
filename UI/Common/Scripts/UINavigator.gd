@@ -25,7 +25,7 @@ func _init(btns: Array, ptr_node: Node2D, ptr_pos: Array):
 		
 	_update_highlight()
 
-func _process(delta):
+func _process(_delta):
 	# Keyboard input moves the current_state and updates highlight
 	if Input.is_action_just_pressed("ui_up") or Input.is_action_just_pressed("up_2") or Input.is_action_just_pressed("up_1") or Input.is_action_just_pressed("left_1") or Input.is_action_just_pressed("left_2"):
 		current_input_mode = InputMode.KEYBOARD
@@ -50,7 +50,7 @@ func _on_button_mouse_entered(index):
 	current_state = index
 	_update_highlight()
 
-func _on_button_mouse_exited(index):
+func _on_button_mouse_exited(_index):
 	# When mouse leaves, if in mouse mode, clear highlight (or restore keyboard highlight)
 	if current_input_mode == InputMode.MOUSE:
 		_clear_all_highlights()

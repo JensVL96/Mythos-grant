@@ -8,7 +8,7 @@
 [ext_resource type="SystemFont" uid="uid://cej7y0pr4hijb" path="res://UI/Titlescreen/buttonFont.tres" id="3_us3ky"]
 [ext_resource type="Texture2D" uid="uid://dg5p0w2pn1m0t" path="res://UI/Titlescreen/menu_finished.png" id="5_do22n"]
 [ext_resource type="AudioStream" uid="uid://dou332p7rold7" path="res://music/Chalk Dust and Legends.mp3" id="7_egggi"]
-[ext_resource type="Script" path="res://UI/Titlescreen/credits_btn.gd" id="7_qk4og"]
+[ext_resource type="Script" path="res://UI/Titlescreen/Scripts/credits_btn.gd" id="7_qk4og"]
 [ext_resource type="Texture2D" uid="uid://bk8s7ft3s0fno" path="res://UI/IntroScreen/Tutorial.png" id="8_7vbq3"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_vxvq3"]
@@ -60,29 +60,11 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_l343d")
 
-[node name="ColorRect" type="ColorRect" parent="."]
-visible = false
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-color = Color(0.447059, 0.345098, 0.823529, 1)
-
 [node name="MenuFinished" type="Sprite2D" parent="."]
 z_index = -10
 position = Vector2(965, 542)
 scale = Vector2(0.59, 0.59)
 texture = ExtResource("5_do22n")
-
-[node name="Label" type="Label" parent="."]
-visible = false
-layout_mode = 0
-offset_right = 526.0
-offset_bottom = 283.0
-text = "Title
-"
 
 [node name="HBoxContainer" type="HBoxContainer" parent="."]
 layout_mode = 1

@@ -1,0 +1,11 @@
+[gd_scene load_steps=3 format=3 uid="uid://cs40kqb3his5u"]
+
+[ext_resource type="AudioStream" uid="uid://dou332p7rold7" path="res://music/Chalk Dust and Legends.mp3" id="1_7tqba"]
+[ext_resource type="Script" path="res://Autoload/GlobalMusic.gd" id="2_jkbeh"]
+
+[node name="MusicPlayer" type="AudioStreamPlayer2D"]
+stream = ExtResource("1_7tqba")
+autoplay = true
+bus = &"Music"
+parameters/looping = false
+script = ExtResource("2_jkbeh")

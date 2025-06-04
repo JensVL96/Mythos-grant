@@ -9,10 +9,10 @@ func _on_QuitButton_focus_exited():
 func _on_pressed():
 	get_tree().quit()
 
-func _on_Area2D_area_entered(area):
+func _on_Area2D_area_entered(_area):
 	emit_signal("focus_entered")
 
-func _on_Area2D_area_exted(area):
+func _on_Area2D_area_exted(_area):
 	emit_signal("focus_exited")
 
 func _on_Button_mouse_entered():
