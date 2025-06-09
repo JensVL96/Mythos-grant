@@ -3,7 +3,14 @@ extends CharacterBody2D
 signal stocks_depleted
 
 ## 1 for Player 1, 2 for Player 2
-@export var id: int
+var _id: int = 0
+
+@export var player_id: int:
+	get:
+		return _id
+	set(value):
+		print("Changing id from %d to %d" % [_id, value])
+		_id = value
 
 # Global variables
 var frame = 0
@@ -119,7 +126,7 @@ func take_damage(particle_amount: int = 5):
 		return
 	#print("Player ", id, " took damage. Stocks left: ", stocks)
 	stocks -= 1
-	get_parent().update_health(id, stocks)
+	get_parent().update_health(player_id, stocks)
 	
 	# Spawn coins at player position
 	spawn_coins(particle_amount)
@@ -232,14 +239,10 @@ func _ready() -> void:
 	platforms_layer = get_parent().get_node("map/Platforms_0")
 	setup_sword_hitbox()
 
-	# Ensure the sprite_frames are set from the scene's resource
-	# This assumes $Sprite.sprite_frames is already set to SpriteFrames_lkorh in the .tscn file
-	# If not, you would need to load it: sprite.sprite_frames = preload("res://Characters/Prof/Prof.tscn").get_node("Prof/Sprite").sprite_frames
-
-	if id == 1:
+	if player_id == 1 or player_id == 3:
 		sprite.scale = Vector2(0.15, 0.15)
 		anim.play("IDLE_RED")
-	elif id == 2:
+	elif player_id == 2 or player_id == 4:
 		sprite.scale = Vector2(0.15, 0.15)
 		anim.play("IDLE_BLUE")
 

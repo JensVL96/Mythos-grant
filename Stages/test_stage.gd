@@ -1,3 +1,4 @@
+# test_stage.gd
 extends Node2D
 
 # How many rounds to play this series
@@ -7,6 +8,11 @@ var round_ended := false
 
 # Track wins: index 1 and 2
 var wins := {1: 0, 2: 0}
+
+var current_player_ids = {
+	"red": 1,
+	"blue": 2,
+}
 
 var start_position: Vector2
 var max_stocks = 5
@@ -27,18 +33,6 @@ func _input(event):
 	if event.is_action_pressed("ui_cancel"):
 		get_tree().quit()
 
-@onready var hb1    = $CanvasLayer/UI/HealthbarP1
-@onready var hb2    = $CanvasLayer/UI/HealthbarP2
-@onready var victory_ui = $CanvasLayer/UI/VictoryScreen
-#@onready var spin_box  = victory_ui.get_node("VBoxContainer/HBoxContainer/SpinBox")
-@onready var btn_game1 = victory_ui.get_node("VBoxContainer/GamesContainer/VBoxContainer/HBoxContainer/1‐game")
-@onready var btn_game3 = victory_ui.get_node("VBoxContainer/GamesContainer/VBoxContainer/HBoxContainer/3‐game")
-@onready var btn_game5 = victory_ui.get_node("VBoxContainer/GamesContainer/VBoxContainer/HBoxContainer/5‐game")
-@onready var red_score = victory_ui.get_node("VBoxContainer/Scoreboard/redWrap/RedSide/redScore")
-@onready var blue_score= victory_ui.get_node("VBoxContainer/Scoreboard/blueWrap/BlueSide/blueScore")
-@onready var win_label = victory_ui.get_node("VBoxContainer/winningPlayer")  # your `winningPlayer` node
-@onready var btn_retry = victory_ui.get_node("VBoxContainer/HBoxContainer2/ButtonRetry")
-@onready var btn_exit  = victory_ui.get_node("VBoxContainer/HBoxContainer2/ButtonExit")
 @onready var spawn_p1 = $SpawnPoints/SpawnP1
 @onready var spawn_p2 = $SpawnPoints/SpawnP2
 
@@ -49,40 +43,29 @@ var CoinScene := preload("res://UI/Common/Scenes/Coin.tscn")
 	$SpawnPoints/MoneySpawn3,
 ]
 
-func update_health(player_id: int, lives: int) -> void:
-	lives = clamp(lives, 0, 5)
-	if str(lives) == '0':
-		return
-
-	if player_id == 1:
-		hb1.play(str(lives))
-	else:
-		hb2.play(str(lives))
-
+@onready var canvas_layer := $CanvasLayer
+@onready var ui_overlay := $CanvasLayer/UIOverlay
+var screenOverlay = null
 
 func _ready():
 	GlobalMusic.stop()
 	match_over = false
 	invuln_timer.timeout.connect(_on_InvulnTimer_timeout)
-	btn_retry.pressed.connect(_on_retry_pressed)
-	btn_exit.pressed.connect(_on_exit_pressed)
-	
-	#btn_game1.toggled.connect(func(toggled): if toggled: _update_game_buttons(1))
-	#btn_game3.toggled.connect(func(toggled): if toggled: _update_game_buttons(3))
-	#btn_game5.toggled.connect(func(toggled): if toggled: _update_game_buttons(5))
-	btn_game1.toggled.connect(_on_game_toggled.bind(btn_game1))
-	btn_game3.toggled.connect(_on_game_toggled.bind(btn_game3))
-	btn_game5.toggled.connect(_on_game_toggled.bind(btn_game5))
-	#btn_game1.toggled.connect(_on_game_toggled)
-	#btn_game3.toggled.connect(_on_game_toggled)
-	#btn_game5.toggled.connect(_on_game_toggled)
 
+	# Now get the ScreenOverlay node inside overlay_instance
+	screenOverlay = ui_overlay.get_node("ScreenOverlay")
+
+	# Connect signals on screenOverlay (VictoryScreen.gd)
+	screenOverlay.retry_pressed.connect(_on_retry_pressed)
+	screenOverlay.exit_pressed.connect(_on_exit_pressed)
+	screenOverlay.game_count_selected.connect(_on_game_toggled)
+	screenOverlay.player_input_changed.connect(_on_player_input_changed)
 	
 	start_position = global_position
 	
 	for p in get_tree().get_nodes_in_group("players"):
-		p.stocks_depleted.connect(_on_player_out.bind(p.id))
-		if p.id == 1:
+		p.stocks_depleted.connect(_on_player_out.bind(p.player_id))
+		if p.player_id == 1 or p.player_id == 3:
 			p.color = "blue"
 			p.play_animation("Idle_blue")
 		else:
@@ -90,7 +73,7 @@ func _ready():
 			p.play_animation("Idle_red")
 		p.stocks = max_stocks
 		
-		match p.id:
+		match p.player_id:
 			1:
 				p.global_position = spawn_p1.global_position
 			2:
@@ -100,16 +83,11 @@ func _ready():
 
 	# Update target_games from spin box before starting
 	#target_games = spin_box.value if spin_box else 1
-	btn_game1.set_pressed(true)
+	
 	#btn_game1.pressed = true
 	target_games = 1
 	# Clear wins at start of series
 	wins = {1: 0, 2: 0}
-	# Update scoreboard UI
-	red_score.text = "0"
-	blue_score.text = "0"
-	# Hide victory UI
-	victory_ui.visible = true
 	
 	start_round()
 
@@ -124,17 +102,23 @@ func start_round():
 	#target_games = spin_box.value if spin_box else 1
 	#target_games = target_games
 	# Hide victory UI
-	#victory_ui.visible = true
+	#overlay_ui.visible = true
 	# Reset health/stocks on both players
 	for p in get_tree().get_nodes_in_group("players"):
 		p.stocks = 5
 		p.percentage = 0
 		p.emit_signal("reset_health")  # optionally if you have such a signal
-		update_health(p.id, p.stocks)
+		screenOverlay.update_healthbar(p.player_id, p.stocks)
 		
 		if p.color == "blue":
+			#p.player_id = current_player_ids["blue"]
+			p.player_id = current_player_ids["blue"]
+			print("at start time setting player id for blue to: " + str(current_player_ids["blue"]))
 			p.play_animation("Idle_blue")
 		elif p.color == "red":
+			#p.player_id = current_player_ids["red"]
+			p.player_id = current_player_ids["red"]
+			print("at start time setting player id for red to: " + str(current_player_ids["red"]))
 			p.play_animation("Idle_red")
 		
 		var charState = p.get_node("StateMachine")
@@ -161,7 +145,7 @@ func start_round():
 			#start_invulnerability(1.0)
 		
 		# Reset position
-		match p.id:
+		match p.player_id:
 			1:
 				p.global_position = spawn_p1.global_position
 			2:
@@ -183,23 +167,23 @@ func _on_player_out(player_id):
 	round_ended = true
 
 	# Update scoreboard labels
-	red_score.text  = str(wins[1])
-	blue_score.text = str(wins[2])
+	screenOverlay.red_score.text  = str(wins[1])
+	screenOverlay.blue_score.text = str(wins[2])
 
 	if wins[player_id] >= target_games:
 		match_over = true
 		# Series over → show Victory UI
-		win_label.text = "Blue Player Wins!" if player_id == 1 else "Red Player Wins!"
+		screenOverlay.win_label.text = "Blue Player Wins!" if player_id == 1 else "Red Player Wins!"
 		
 		match target_games:
-			1: btn_game1.set_pressed(true)
-			3: btn_game3.set_pressed(true)
-			5: btn_game5.set_pressed(true)
+			1: screenOverlay.btn_game1.set_pressed(true)
+			3: screenOverlay.btn_game3.set_pressed(true)
+			5: screenOverlay.btn_game5.set_pressed(true)
 
-		victory_ui.visible = true
+		screenOverlay.visible = true
 		# Enable buttons
-		btn_retry.disabled = false
-		btn_exit.disabled = false
+		screenOverlay.btn_retry.disabled = false
+		screenOverlay.btn_exit.disabled = false
 	else:
 		# Next round automatically, no UI shown
 		await get_tree().create_timer(2.0).timeout
@@ -209,14 +193,15 @@ func _on_player_out(player_id):
 func _on_retry_pressed():
 	#print(">>> RETRY PRESSED")
 	match_over = false
-	btn_retry.disabled = true
-	btn_exit.disabled = true
-	victory_ui.visible = false
+	screenOverlay.btn_retry.disabled = true
+	screenOverlay.btn_exit.disabled = true
+	if screenOverlay:
+		screenOverlay.visible = false
 
 	# Reset wins and scoreboard
 	wins = {1: 0, 2: 0}
-	red_score.text = "0"
-	blue_score.text = "0"
+	screenOverlay.red_score.text = "0"
+	screenOverlay.blue_score.text = "0"
 	#target_games = spin_box.value if spin_box else 1
 
 	# Reset players
@@ -227,7 +212,7 @@ func _on_retry_pressed():
 		var charState = p.get_node("StateMachine")
 		charState.state = charState.states.STAND
 		
-		match p.id:
+		match p.player_id:
 			1:
 				p.global_position = spawn_p1.global_position
 			2, 3:
@@ -235,22 +220,48 @@ func _on_retry_pressed():
 
 	start_round()
 
-func _on_game_toggled(pressed: bool, sender):
-	if not pressed:
-		return
-	if sender == btn_game1:
-		target_games = 1
-	elif sender == btn_game3:
-		target_games = 3
-	elif sender == btn_game5:
-		target_games = 5
+func _on_game_toggled(count: int):
+	target_games = count
+	print("Target games set to: ", count)
+
+func _on_player_input_changed(player_side: String, desired: String):
+	var new_id = 0
+	if player_side == "red":
+		new_id = 3 if desired == "con" else 1
+	elif player_side == "blue":
+		new_id = 4 if desired == "con" else 2
+	#print("trying to update input")
+	if player_side == "red":
+		if new_id == 1:
+			print("left side  has chosen keyboard with id 1")
+		if new_id == 3:
+			print("left side  has chosen controller with id 3")
+	elif player_side == "blue":
+		if new_id == 2:
+			print("right side  has chosen keyboard with id 2")
+		if new_id == 4:
+			print("right side  has chosen controller with id 4")
+
+	current_player_ids[player_side] = new_id
+
+	## Update players in group "players"
+	#for p in get_tree().get_nodes_in_group("players"):
+		#if player_side == "red" and (p.player_id == 1 or p.player_id == 3):
+			#p.player_id = new_id
+			#print("Updated Player 1 id to ", new_id)
+		#elif player_side == "blue" and (p.player_id == 2 or p.player_id == 4):
+			#p.player_id = new_id
+			#print("Updated Player 2 id to ", new_id)
 
 func _on_exit_pressed():
 	# Either change to your title scene:
 	get_tree().change_scene_to_file("res://UI/Titlescreen/titlescreen.tscn")
 	# —or, if you have a menu UI you show, just toggle visibility there:
 	# $CanvasLayer/UI/TitleScreenUI.visible = true
-	# victory_ui.visible = false
+	# screenOverlay.visible = false
+
+func update_health(id: int, stocks: int) -> void:
+	screenOverlay.update_healthbar(id, stocks)
 
 func spawn_coin():
 	if current_coin != null and current_coin.is_inside_tree():
@@ -267,7 +278,7 @@ func spawn_coin():
 func _on_coin_picked_up(player):
 	if player.stocks < max_stocks:
 		player.stocks += 1
-		update_health(player.id, player.stocks)
+		screenOverlay.update_health(player.player_id, player.stocks)
 
 	# Remove the coin reference as it was picked up
 	current_coin = null

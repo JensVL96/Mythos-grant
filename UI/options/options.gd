@@ -1,3 +1,4 @@
+# options.gd
 extends Control
 
 # Node references
@@ -6,6 +7,16 @@ extends Control
 @onready var sound_toggle = $HBoxContainer/VBoxContainer/SoundToggle
 @onready var volume_slider = $HBoxContainer/VBoxContainer/HBoxContainer/VolumeSlider
 @onready var back_button = $HBoxContainer/VBoxContainer/BackButton
+
+@onready var buttons = [
+	[$HBoxContainer/VBoxContainer/FullscreenToggle],
+	[$HBoxContainer/VBoxContainer/MusicToggle],
+	[$HBoxContainer/VBoxContainer/HBoxContainer/VolumeSlider],
+	[$HBoxContainer/VBoxContainer/SoundToggle],
+	[$HBoxContainer/VBoxContainer/BackButton]
+]
+
+var ui_navigator
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -35,6 +46,11 @@ func _ready() -> void:
 	
 	volume_slider.editable = music_toggle.button_pressed
 	volume_slider.custom_minimum_size = Vector2(200, 0)
+	
+	# Use the global navigator from the autoload singleton
+	GlobalUI.setup_navigation(buttons)
+	GlobalUI.navigator.connect("option_selected", Callable(self, "_on_option_selected"))
+	GlobalUI.navigator.enabled = true
 
 func _on_fullscreen_toggled(button_pressed: bool) -> void:
 	#print("Toggled fullscreen to: ", button_pressed)

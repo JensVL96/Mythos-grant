@@ -30,11 +30,11 @@ script = ExtResource("3_amvbu")
 
 [node name="PROF" parent="." groups=["players"] instance=ExtResource("6_duald")]
 position = Vector2(-228, 145)
-player_id = 3
+id = 3
 
 [node name="PROF2" parent="." groups=["players"] instance=ExtResource("6_duald")]
 position = Vector2(278, 148)
-player_id = 4
+id = 4
 
 [node name="SpawnPoints" type="Node" parent="."]
 

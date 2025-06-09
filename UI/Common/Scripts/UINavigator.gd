@@ -1,4 +1,6 @@
+# UINavigator.gd
 extends Node
+class_name UINavigator
 
 signal option_selected(index)
 
@@ -7,70 +9,112 @@ enum InputMode { KEYBOARD, MOUSE }
 var current_state = 0
 var current_input_mode = InputMode.KEYBOARD
 
-var buttons: Array = []
-var pointer_node: Node2D = null
-var pointer_positions: Array = []
+var enabled: bool = true
 
-func _init(btns: Array, ptr_node: Node2D, ptr_pos: Array):
-	buttons = btns
-	pointer_node = ptr_node
-	pointer_positions = ptr_pos
+var button_grid: Array = []
+var current_row: int = 0
+var current_col: int = 0
+#var pointer_node: Node2D = null
+#var pointer_positions: Array = []
+
+func setup(new_grid: Array):
+	# Disconnect old signals safely
+	for row in button_grid:
+		for btn in row:
+			if btn != null and is_instance_valid(btn):
+				if btn.is_connected("mouse_entered", Callable(self, "_on_button_mouse_entered")):
+					btn.disconnect("mouse_entered", Callable(self, "_on_button_mouse_entered"))
+
+	# Apply new grid
+	button_grid = new_grid
+	current_row = 0
+	current_col = 0
 	
-	# Connect mouse hover signals on each button's Area2D
-	for i in range(buttons.size()):
-		var area = buttons[i].get_node("Area2D")
-		if area:
-			area.connect("mouse_entered", Callable(self, "_on_button_mouse_entered").bind(i))
-			area.connect("mouse_exited", Callable(self, "_on_button_mouse_exited").bind(i))
-		
+	if button_grid.size() == 0 or not enabled:
+		print("grid is empty")
+		return
+
 	_update_highlight()
+
+	# Connect new signals
+	for i in range(button_grid.size()):
+		for j in range(button_grid[i].size()):
+			var btn = button_grid[i][j]
+			if btn != null and is_instance_valid(btn):
+				btn.connect("mouse_entered", Callable(self, "_on_button_mouse_entered").bind(btn))
 
 func _process(_delta):
-	# Keyboard input moves the current_state and updates highlight
-	if Input.is_action_just_pressed("ui_up") or Input.is_action_just_pressed("up_2") or Input.is_action_just_pressed("up_1") or Input.is_action_just_pressed("left_1") or Input.is_action_just_pressed("left_2"):
-		current_input_mode = InputMode.KEYBOARD
-		current_state -= 1
-		if current_state < 0:
-			current_state = buttons.size() - 1
-		_update_highlight()
-	elif Input.is_action_just_pressed("ui_down") or Input.is_action_just_pressed("down_2") or Input.is_action_just_pressed("down_1") or Input.is_action_just_pressed("right_1") or Input.is_action_just_pressed("right_2"):
-		current_input_mode = InputMode.KEYBOARD
-		current_state = (current_state + 1) % buttons.size()
-		_update_highlight()
-	
-	if Input.is_action_just_pressed("ui_accept"):
-		emit_signal("option_selected", current_state)
+	if not enabled or button_grid.size() == 0:
+		# print for debug:
+		return
 
-	# Move the pointer based on current_state
-	if pointer_node and current_state < pointer_positions.size():
-		pointer_node.global_position = pointer_positions[current_state]
+	if Input.is_action_just_pressed("ui_up") or _is_action_just_pressed_prefix("up_"):
+		current_row = (current_row - 1 + button_grid.size()) % button_grid.size()
+		current_col = min(current_col, button_grid[current_row].size() - 1)
+		_update_highlight()
 
-func _on_button_mouse_entered(index):
+	elif Input.is_action_just_pressed("ui_down") or _is_action_just_pressed_prefix("down_"):
+		current_row = (current_row + 1) % button_grid.size()
+		current_col = min(current_col, button_grid[current_row].size() - 1)
+		_update_highlight()
+
+	elif Input.is_action_just_pressed("ui_left") or _is_action_just_pressed_prefix("left_"):
+		current_col = (current_col - 1 + button_grid[current_row].size()) % button_grid[current_row].size()
+		_update_highlight()
+
+	elif Input.is_action_just_pressed("ui_right") or _is_action_just_pressed_prefix("right_"):
+		current_col = (current_col + 1) % button_grid[current_row].size()
+		_update_highlight()
+
+	elif enabled and Input.is_action_just_pressed("ui_accept"):  # <-- add `enabled` here
+		var btn = button_grid[current_row][current_col]
+		var flat_index = _get_flat_index(btn)
+		if flat_index != -1:
+			emit_signal("option_selected", flat_index)
+
+func _on_button_mouse_entered(btn):
+	if not enabled:
+		return
 	current_input_mode = InputMode.MOUSE
-	current_state = index
-	_update_highlight()
-
-func _on_button_mouse_exited(_index):
-	# When mouse leaves, if in mouse mode, clear highlight (or restore keyboard highlight)
-	if current_input_mode == InputMode.MOUSE:
-		_clear_all_highlights()
-		# Re-highlight the current_state button if it's still in keyboard mode or if the mouse is not over any other button
-		if current_input_mode == InputMode.KEYBOARD or not get_viewport().get_mouse_mode() == Input.MOUSE_MODE_VISIBLE:
-			_highlight_button(current_state)
-
-func _highlight_button(index):
-	# Clear all first
-	_clear_all_highlights()
-	# Highlight font outline on hovered button
-	var btn = buttons[index]
-	btn.add_theme_color_override("font_outline_color", Color(1, 0.3, 0))  # example highlight color
-
-func _clear_all_highlights():
-	for btn in buttons:
-		btn.add_theme_color_override("font_outline_color", Color(0, 0, 0))  # reset to black
+	for i in range(button_grid.size()):
+		for j in range(button_grid[i].size()):
+			if button_grid[i][j] == btn:
+				current_row = i
+				current_col = j
+				_update_highlight()
+				return
 
 func _update_highlight():
 	if current_input_mode == InputMode.KEYBOARD:
-		_clear_all_highlights()
-		_highlight_button(current_state)
-		buttons[current_state].grab_focus()
+		_highlight_button(current_row, current_col)
+
+func _highlight_button(row: int, col: int):
+	_clear_all_highlights()
+	if row < button_grid.size() and col < button_grid[row].size():
+		var btn = button_grid[row][col]
+		btn.grab_focus()
+		btn.add_theme_color_override("font_outline_color", Color(1, 0.3, 0))  # orange
+
+func _clear_all_highlights():
+	for row in button_grid:
+		for btn in row:
+			btn.add_theme_color_override("font_outline_color", Color(0, 0, 0))  # default black
+
+func _get_flat_index(target_btn):
+	var flat_index = 0
+	for row in button_grid:
+		for btn in row:
+			if btn == target_btn:
+				return flat_index
+			flat_index += 1
+	return -1
+
+func _is_action_just_pressed_prefix(prefix: String) -> bool:
+	for action in InputMap.get_actions():
+		if action.begins_with(prefix) and Input.is_action_just_pressed(action):
+			return true
+	return false
+
+func set_enabled(value: bool):
+	print("trying to disable inputs local: " + str(value))
+	enabled = value

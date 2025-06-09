@@ -1,6 +1,6 @@
 extends StateMachine
 #@export var id: int
-@onready var id = get_parent().id
+@onready var state_id = get_parent().player_id
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -39,6 +39,8 @@ func state_logic(delta):
 func get_transition(delta):
 	parent.set_up_direction(Vector2.UP)
 	parent.move_and_slide()
+	
+	#print("current id is: " + str(state_id))
 
 	if LANDING():
 		parent._frame()
@@ -47,26 +49,26 @@ func get_transition(delta):
 	if FALLING():
 		return states.AIR
 
-	if Input.is_action_just_pressed("dash_" + str(id)):
+	if Input.is_action_just_pressed("dash_" + str(state_id)):
 		if parent.is_on_floor():
 			return states.GROUNDDASH
 		else:
 			return states.AIRDASH
 
-	#if Input.is_action_just_pressed("attack_" + str(id)):
+	#if Input.is_action_just_pressed("attack_" + str(state_id)):
 		#parent._frame()
 		##parent.sword.swing() #parent.direction()
 		#return states.SWING
 		
-	if Input.is_action_just_pressed("attack_" + str(id)):
+	if Input.is_action_just_pressed("attack_" + str(state_id)):
 		parent._frame()
 		parent.trigger_sword_attack()
 	
-	if Input.is_action_just_released("attack_" + str(id)):
+	if Input.is_action_just_released("attack_" + str(state_id)):
 		parent._frame()
 		parent.release_sword_attack()
 		
-	#if Input.is_action_pressed("down_" + str(id)) and parent.is_on_floor():
+	#if Input.is_action_pressed("down_" + str(state_id)) and parent.is_on_floor():
 		## Start dropping through platform
 		#parent.dropping_through_platforms = true
 		#parent.platform_drop_timer = 0.3  # Duration you ignore the platform
@@ -77,10 +79,10 @@ func get_transition(delta):
 	match state:
 		states.STAND:
 			parent.reset_Jumps()
-			if Input.is_action_just_pressed("jump_" + str(id)):
+			if Input.is_action_just_pressed("jump_" + str(state_id)):
 				parent._frame()
 				return states.JUMP_SQUAT
-			if Input.is_action_pressed("down_" + str(id)):  # Ensure you're checking the input properly
+			if Input.is_action_pressed("down_" + str(state_id)):  # Ensure you're checking the input properly
 				if parent.is_on_floor():
 					if parent.is_on_platform():  # Check if you're on a platform
 						parent.dropping_through_platforms = true
@@ -91,15 +93,15 @@ func get_transition(delta):
 						parent.GroundR.enabled = false
 
 				# Now check if we're crouching
-				if Input.is_action_pressed("down_" + str(id)):
+				if Input.is_action_pressed("down_" + str(state_id)):
 					parent._frame()
 					return states.CROUCH
-			if Input.get_action_strength("right_" + str(id)):
+			if Input.get_action_strength("right_" + str(state_id)):
 				parent.velocity.x = -parent.RUNSPEED
 				parent._frame()
 				parent.turn(false)
 				return states.DASH  # Transition to DASH state
-			elif Input.get_action_strength("left_" + str(id)):
+			elif Input.get_action_strength("left_" + str(state_id)):
 				parent.velocity.x = parent.RUNSPEED
 				parent._frame()
 				parent.turn(true)
@@ -116,15 +118,15 @@ func get_transition(delta):
 	#
 		states.JUMP_SQUAT:
 			if parent.frame == parent.jump_squat:
-				#if (Input.is_action_pressed("shield_" + str(id))) and (Input.is_action_pressed("left_" + str(id))) or (Input.is_action_pressed("right_" + str(id))):
-					#if Input.is_action_pressed("right_" + str(id)):
+				#if (Input.is_action_pressed("shield_" + str(state_id))) and (Input.is_action_pressed("left_" + str(state_id))) or (Input.is_action_pressed("right_" + str(state_id))):
+					#if Input.is_action_pressed("right_" + str(state_id)):
 						#parent.velocity.x = parent.air_dodge_speed / parent.perfect_airdash_modifier
-					#if Input.is_action_pressed("left_" + str(id)):
+					#if Input.is_action_pressed("left_" + str(state_id)):
 						#parent.velocity.x = -parent.air_dodge_speed / parent.perfect_airdash_modifier
 					#parent.lag_frames = 6
 					#parent._frame()
 					#return states.LANDING
-				if not Input.is_action_pressed("jump_" + str(id)):
+				if not Input.is_action_pressed("jump_" + str(state_id)):
 					parent.velocity.x = lerpf(parent.velocity.x, 0, 0.08)
 					#parent.velocity.x = lerpf(parent.velocity.x, parent.dash_momentum.x, 0.08)
 					parent._frame()
@@ -146,15 +148,15 @@ func get_transition(delta):
 			return states.AIR
 	#
 		states.DASH:
-			if Input.is_action_just_pressed("jump_" + str(id)):
+			if Input.is_action_just_pressed("jump_" + str(state_id)):
 				parent._frame()
 				return states.JUMP_SQUAT
-			if Input.is_action_pressed("left_" + str(id)):
+			if Input.is_action_pressed("left_" + str(state_id)):
 				if parent.velocity.x > 0:
 					parent._frame()
 				parent.velocity.x = -parent.DASHSPEED
 				if parent.frame <= parent.dash_duration - 1:
-					if Input.is_action_just_pressed("down_" + str(id)):
+					if Input.is_action_just_pressed("down_" + str(state_id)):
 						parent._frame()
 						return states.CROUCH
 					parent.turn(false)
@@ -163,12 +165,12 @@ func get_transition(delta):
 					parent.turn(false)
 					parent._frame()
 					return states.RUN
-			elif Input.is_action_pressed("right_" + str(id)):
+			elif Input.is_action_pressed("right_" + str(state_id)):
 				if parent.velocity.x < 0:
 					parent._frame()
 				parent.velocity.x = parent.DASHSPEED
 				if parent.frame <= parent.dash_duration - 1:
-					if Input.is_action_just_pressed("down_" + str(id)):
+					if Input.is_action_just_pressed("down_" + str(state_id)):
 						parent._frame()
 						return states.MOONWALK
 					parent.turn(true)
@@ -185,19 +187,19 @@ func get_transition(delta):
 						return states.STAND
 	#
 		states.WALK:
-			if Input.is_action_just_pressed("jump_" + str(id)):
+			if Input.is_action_just_pressed("jump_" + str(state_id)):
 				parent._frame()
 				return states.JUMP_SQUAT
-			if Input.is_action_just_pressed("down_" + str(id)):
+			if Input.is_action_just_pressed("down_" + str(state_id)):
 				parent._frame()
 				return states.CROUCH
-			if Input.get_action_strength("left_" + str(id)):
+			if Input.get_action_strength("left_" + str(state_id)):
 				if parent.velocity.x <= 0:
-					parent.velocity.x = -parent.WALKSPEED * Input.get_action_strength("left_" + str(id))
+					parent.velocity.x = -parent.WALKSPEED * Input.get_action_strength("left_" + str(state_id))
 					parent.turn(false)
-			elif Input.get_action_strength("right_" + str(id)):
+			elif Input.get_action_strength("right_" + str(state_id)):
 				if parent.velocity.x >= 0:
-					parent.velocity.x = parent.WALKSPEED * Input.get_action_strength("right_" + str(id))
+					parent.velocity.x = parent.WALKSPEED * Input.get_action_strength("right_" + str(state_id))
 					parent.turn(true)
 			else:
 				parent._frame()
@@ -213,10 +215,10 @@ func get_transition(delta):
 					parent.GroundL.enabled = false
 					parent.GroundR.enabled = false
 
-			if Input.is_action_just_pressed("jump_" + str(id)):
+			if Input.is_action_just_pressed("jump_" + str(state_id)):
 				parent._frame()
 				return states.JUMP_SQUAT
-			if Input.is_action_just_released("down_" + str(id)):
+			if Input.is_action_just_released("down_" + str(state_id)):
 				parent._frame()
 				return states.STAND
 			elif parent.velocity.x > 0 and not parent.dropping_through_platforms:
@@ -235,7 +237,7 @@ func get_transition(delta):
 					parent.velocity.x = clampf(parent.velocity.x, 0, parent.velocity.x)
 	
 		states.RUN:
-			if Input.is_action_just_pressed("jump_%d" % id) and parent.dash_jump_window > 0:
+			if Input.is_action_just_pressed("jump_%d" % state_id) and parent.dash_jump_window > 0:
 				parent.dash_jump_window = 0     # consume buffer
 				# — Perform the "dash jump" even from the ground —
 				parent.fastfall = false
@@ -245,15 +247,15 @@ func get_transition(delta):
 
 			# ——————————————————————
 			# 4) Otherwise your normal RUN logic…
-			if Input.is_action_just_pressed("jump_%d" % id):
+			if Input.is_action_just_pressed("jump_%d" % state_id):
 				parent._frame()
 				return states.JUMP_SQUAT
-			if Input.is_action_just_pressed("down_%d" % id):
+			if Input.is_action_just_pressed("down_%d" % state_id):
 				parent._frame()
 				return states.CROUCH
 
 			# … (rest of your RUN left/right/stand code unchanged) …
-			if Input.get_action_strength("left_%d" % id):
+			if Input.get_action_strength("left_%d" % state_id):
 				if parent.velocity.x <= 0:
 					parent.velocity.x = -parent.RUNSPEED
 					parent.turn(false)
@@ -261,7 +263,7 @@ func get_transition(delta):
 					parent._frame()
 					return states.TURN
 
-			elif Input.get_action_strength("right_%d" % id):
+			elif Input.get_action_strength("right_%d" % state_id):
 				if parent.velocity.x >= 0:
 					parent.velocity.x = parent.RUNSPEED
 					parent.turn(true)
@@ -274,7 +276,7 @@ func get_transition(delta):
 				return states.STAND
 	
 		states.TURN:
-			if Input.is_action_just_pressed("jump_" + str(id)):
+			if Input.is_action_just_pressed("jump_" + str(state_id)):
 				parent._frame()
 				return states.JUMP_SQUAT
 			if parent.velocity.x > 0:
@@ -286,7 +288,7 @@ func get_transition(delta):
 				parent.velocity.x += parent.TRACTION * 2
 				parent.velocity.x = clampf(parent.velocity.x, parent.velocity.x, 0)
 			else:
-				if not Input.is_action_pressed("left_" + str(id)) and not Input.is_action_pressed("right_" + str(id)):
+				if not Input.is_action_pressed("left_" + str(state_id)) and not Input.is_action_pressed("right_" + str(state_id)):
 					parent._frame()
 					return states.STAND
 				else:
@@ -294,13 +296,13 @@ func get_transition(delta):
 					return states.RUN
 
 		states.MOONWALK:
-			if Input.is_action_just_pressed("jump_" + str(id)):
+			if Input.is_action_just_pressed("jump_" + str(state_id)):
 				parent._frame()
 				return states.JUMP_SQUAT
-			elif Input.is_action_pressed("left_" + str(id)) and parent.direction():
+			elif Input.is_action_pressed("left_" + str(state_id)) and parent.direction():
 				if parent.velocity.x > 0:
 					parent._frame()
-				parent.velocity.x += -parent.AIR_ACCEL * Input.get_action_strength("left_" + str(id))
+				parent.velocity.x += -parent.AIR_ACCEL * Input.get_action_strength("left_" + str(state_id))
 				parent.velocity.x = clampf(parent.velocity.x, -parent.DASHSPEED * 1.4, parent.velocity.x)
 				if parent.frame <= parent.dash_duration * 2:
 					parent.turn(false)
@@ -310,10 +312,10 @@ func get_transition(delta):
 					parent._frame()
 					return states.STAND
 
-			elif Input.is_action_pressed("right_" + str(id)) and parent.direction() == -1:
+			elif Input.is_action_pressed("right_" + str(state_id)) and parent.direction() == -1:
 				if parent.velocity.x < 0:
 					parent._frame()
-				parent.velocity.x += parent.AIR_ACCEL * Input.get_action_strength("right_" + str(id))
+				parent.velocity.x += parent.AIR_ACCEL * Input.get_action_strength("right_" + str(state_id))
 				parent.velocity.x = clampf(parent.velocity.x, parent.velocity.x, parent.DASHSPEED * 1.5)
 				if parent.frame <= parent.dash_duration * 2:
 					parent.turn(true)
@@ -330,7 +332,7 @@ func get_transition(delta):
 		states.AIR:
 			AIRMOVEMENT()
 			
-			if Input.is_action_just_pressed("jump_%d" % id) and parent.dash_jump_window == (parent.DASH_JUMP_BUFFER_FRAMES - 1):
+			if Input.is_action_just_pressed("jump_%d" % state_id) and parent.dash_jump_window == (parent.DASH_JUMP_BUFFER_FRAMES - 1):
 				parent.dash_jump_window = 0   # consume buffer
 
 				parent.fastfall = false
@@ -364,7 +366,7 @@ func get_transition(delta):
 					# Wall on the left → push right, wall on the right → push left
 					wall_jump_dir = -sign(normal.x)
 
-			if Input.is_action_just_pressed("jump_%d" % id):
+			if Input.is_action_just_pressed("jump_%d" % state_id):
 				if test_collision and wall_jump_dir != 0:
 					parent.fastfall = false
 					parent.velocity.y = -parent.DOUBLEJUMPFORCE
@@ -375,9 +377,9 @@ func get_transition(delta):
 					parent.velocity.x = 0
 					parent.velocity.y = -parent.DOUBLEJUMPFORCE
 					parent.airJump -= 1
-					if Input.is_action_pressed("left_%d" % id):
+					if Input.is_action_pressed("left_%d" % state_id):
 						parent.velocity.x = -parent.MAXAIRSPEED
-					elif Input.is_action_pressed("right_%d" % id):
+					elif Input.is_action_pressed("right_%d" % state_id):
 						parent.velocity.x = parent.MAXAIRSPEED
 
 		states.HITFREEZE:
@@ -472,11 +474,11 @@ func get_transition(delta):
 					parent.velocity.x = parent.velocity.x + parent.TRACTION / 2
 					#parent.velocity.x = lerpf(parent.velocity.x, parent.dash_momentum.x, 0.5)
 					parent.velocity.x = clampf(parent.velocity.x, parent.velocity.x, 0)
-				if Input.is_action_pressed("jump_" + str(id)):
+				if Input.is_action_pressed("jump_" + str(state_id)):
 					parent._frame()
 					return states.JUMP_SQUAT
 			else:
-				if Input.is_action_pressed("down_" + str(id)):
+				if Input.is_action_pressed("down_" + str(state_id)):
 					parent.lag_frames = 0
 					parent._frame()
 					parent.reset_Jumps()
@@ -489,22 +491,22 @@ func get_transition(delta):
 				#parent.lag_frames = 0
 
 		states.SWING:
-			if Input.is_action_just_pressed("attack_" + str(id)):
+			if Input.is_action_just_pressed("attack_" + str(state_id)):
 				parent.trigger_sword_attack()
 
-			if Input.is_action_just_released("attack_" + str(id)):
+			if Input.is_action_just_released("attack_" + str(state_id)):
 				parent.release_sword_attack()
 
 		states.AIRDASH:
 			if parent.dashMax > 0:
 				var direction = Vector2.ZERO
-				if Input.is_action_pressed("left_" + str(id)):
+				if Input.is_action_pressed("left_" + str(state_id)):
 					direction.x -= 1
-				if Input.is_action_pressed("right_" + str(id)):
+				if Input.is_action_pressed("right_" + str(state_id)):
 					direction.x += 1
-				if Input.is_action_pressed("up_" + str(id)):
+				if Input.is_action_pressed("up_" + str(state_id)):
 					direction.y -= 1
-				if Input.is_action_pressed("down_" + str(id)):
+				if Input.is_action_pressed("down_" + str(state_id)):
 					direction.y += 1
 				
 				if direction != Vector2.ZERO:
@@ -532,7 +534,7 @@ func get_transition(delta):
 				wall_dir = -1
 				
 			# — If player hits “jump” while dashing —
-			if Input.is_action_just_pressed("jump_%d" % id):
+			if Input.is_action_just_pressed("jump_%d" % state_id):
 				if wall_dir != 0:
 					# WALL JUMP with DASH MOMENTUM
 					parent.fastfall = false
@@ -565,13 +567,13 @@ func get_transition(delta):
 			#parent.dash_momentum = Vector2.ZERO
 
 			var direction = Vector2.ZERO
-			if Input.is_action_pressed("left_" + str(id)):
+			if Input.is_action_pressed("left_" + str(state_id)):
 				direction.x -= 1
-			if Input.is_action_pressed("right_" + str(id)):
+			if Input.is_action_pressed("right_" + str(state_id)):
 				direction.x += 1
-			if Input.is_action_pressed("up_" + str(id)):
+			if Input.is_action_pressed("up_" + str(state_id)):
 				direction.y -= 1
-			if Input.is_action_pressed("down_" + str(id)):
+			if Input.is_action_pressed("down_" + str(state_id)):
 				direction.y += 1
 			
 			if direction == Vector2.ZERO:
@@ -597,17 +599,17 @@ func get_transition(delta):
 			
 			# If player is holding a direction, maintain momentum in that direction
 			var input_direction = 0
-			if Input.is_action_pressed("left_" + str(id)):
+			if Input.is_action_pressed("left_" + str(state_id)):
 				input_direction = -1
 				parent.velocity.x = move_toward(parent.velocity.x, -parent.RUNSPEED, parent.TRACTION)
-			elif Input.is_action_pressed("right_" + str(id)):
+			elif Input.is_action_pressed("right_" + str(state_id)):
 				input_direction = 1
 				parent.velocity.x = move_toward(parent.velocity.x, parent.RUNSPEED, parent.TRACTION)
 			elif original_dash_direction != 0:  # If no input but we had a dash direction
 				# Maintain some momentum in the original dash direction, but with more friction
 				parent.velocity.x = move_toward(parent.velocity.x, original_dash_direction * parent.RUNSPEED * 0.5, parent.ground_dash_friction * 0.5)
 			
-			if Input.is_action_just_pressed("jump_" + str(id)) and parent.can_jump_during_dash:
+			if Input.is_action_just_pressed("jump_" + str(state_id)) and parent.can_jump_during_dash:
 				parent.can_jump_during_dash = false  # Only one jump
 				return states.GROUNDDASH_JUMP
 			
@@ -618,7 +620,7 @@ func get_transition(delta):
 		states.GROUNDDASH_JUMP:
 			var jump_dir = parent.dash_momentum.normalized()
 
-			if Input.is_action_pressed("left_" + str(id)) and jump_dir.x > 0:
+			if Input.is_action_pressed("left_" + str(state_id)) and jump_dir.x > 0:
 				jump_dir.x = -jump_dir.x  # reverse super
 
 			# Determine Jump Type
@@ -643,7 +645,7 @@ func enter_state(new_state, _old_state):
 	match new_state:
 		states.STAND:
 			parent.anim.frame = 0
-			if parent.id == 1:
+			if parent.player_id == 1 or parent.player_id == 3:
 				parent.play_animation("Idle_blue")
 			else:
 				parent.play_animation("Idle_red")
@@ -696,7 +698,7 @@ func enter_state(new_state, _old_state):
 		states.DYING:
 			parent.anim.frame = 0
 			parent.sprite.scale = Vector2(0.15, 0.15)
-			if parent.id == 1:
+			if parent.player_id == 1 or parent.player_id == 3:
 				#print("Blue is dying: " + str(parent.id))
 				parent.play_animation("Death_red")
 			else:
@@ -728,7 +730,7 @@ func AIRMOVEMENT():
 		parent.velocity.y += parent.FALLSPEED
 	
 	# Handle fastfall
-	if Input.is_action_pressed("down_" + str(id)) and parent.velocity.y > -150 and not parent.fastfall: #and parent.down_buffer == 1
+	if Input.is_action_pressed("down_" + str(state_id)) and parent.velocity.y > -150 and not parent.fastfall: #and parent.down_buffer == 1
 		parent.velocity.y = parent.MAXFALLSPEED
 		#parent.fastfall = true
 	
@@ -743,24 +745,24 @@ func AIRMOVEMENT():
 	# Horizontal air movement
 	if abs(parent.velocity.x) >= abs(parent.MAXAIRSPEED):
 		if parent.velocity.x > 0:
-			if Input.is_action_pressed("left_" + str(id)):
+			if Input.is_action_pressed("left_" + str(state_id)):
 				parent.velocity.x += -parent.AIR_ACCEL
-			elif Input.is_action_pressed("right_" + str(id)):
+			elif Input.is_action_pressed("right_" + str(state_id)):
 				parent.velocity.x = parent.velocity.x
 		if parent.velocity.x < 0:
-			if Input.is_action_pressed("left_" + str(id)):
+			if Input.is_action_pressed("left_" + str(state_id)):
 				parent.velocity.x = parent.velocity.x
-			elif Input.is_action_pressed("right_" + str(id)):
+			elif Input.is_action_pressed("right_" + str(state_id)):
 				parent.velocity.x += parent.AIR_ACCEL
 
 	elif abs(parent.velocity.x) < abs(parent.MAXAIRSPEED):
-		if Input.is_action_pressed("left_" + str(id)):
+		if Input.is_action_pressed("left_" + str(state_id)):
 			parent.velocity.x += -parent.AIR_ACCEL
-		elif Input.is_action_pressed("right_" + str(id)):
+		elif Input.is_action_pressed("right_" + str(state_id)):
 			parent.velocity.x += parent.AIR_ACCEL
 	
 	# Apply air friction if no horizontal input
-	if not Input.is_action_pressed("left_" + str(id)) and not Input.is_action_pressed("right_" + str(id)):
+	if not Input.is_action_pressed("left_" + str(state_id)) and not Input.is_action_pressed("right_" + str(state_id)):
 		if parent.velocity.x < 0:
 			parent.velocity.x += parent.AIR_ACCEL / 5
 		elif parent.velocity.x > 0:

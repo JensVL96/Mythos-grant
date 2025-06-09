@@ -1,0 +1,398 @@
+[gd_scene load_steps=27 format=3 uid="uid://764l7jlimowf"]
+
+[ext_resource type="Texture2D" uid="uid://bjlx58f6mfe8c" path="res://UI/healthbars/blue_health_1_small.png" id="1_3pubi"]
+[ext_resource type="Texture2D" uid="uid://vrt8vrpkyott" path="res://UI/healthbars/blue_health_1_big.png" id="2_ldwnq"]
+[ext_resource type="Texture2D" uid="uid://b01x6kqsn0eph" path="res://UI/healthbars/blue_health_2.png" id="3_5fbv1"]
+[ext_resource type="Texture2D" uid="uid://d3p00fk4qqpew" path="res://UI/healthbars/blue_health_3.png" id="4_wht28"]
+[ext_resource type="Texture2D" uid="uid://dtmakav301mel" path="res://UI/healthbars/blue_health_4.png" id="5_ejtwe"]
+[ext_resource type="Texture2D" uid="uid://c26dc51e81u71" path="res://UI/healthbars/blue_health_5.png" id="6_xrph2"]
+[ext_resource type="Texture2D" uid="uid://4n5mggkvay7w" path="res://UI/healthbars/red_health_1_small.png" id="7_jjbom"]
+[ext_resource type="Texture2D" uid="uid://k6rbyuuumryc" path="res://UI/healthbars/red_health_1_big.png" id="8_hisf3"]
+[ext_resource type="Texture2D" uid="uid://4f7ruqqoqc76" path="res://UI/healthbars/red_health_2.png" id="9_nr6nj"]
+[ext_resource type="Texture2D" uid="uid://die0g7iw5fwql" path="res://UI/healthbars/red_health_3.png" id="10_crjh7"]
+[ext_resource type="Texture2D" uid="uid://cppncjp12haas" path="res://UI/healthbars/red_health_4.png" id="11_60cco"]
+[ext_resource type="Texture2D" uid="uid://bba2to02sxwsk" path="res://UI/healthbars/red_health_5.png" id="12_4tc6g"]
+[ext_resource type="Script" path="res://Stages/victoryScreen.gd" id="13_ipdjr"]
+[ext_resource type="Texture2D" uid="uid://cm13alp5evla4" path="res://UI/themes/InputThemes/ControllerRed.png" id="14_2hj0x"]
+[ext_resource type="Texture2D" uid="uid://cou5dst7sps1h" path="res://UI/themes/InputThemes/keyboardRed.png" id="15_scwis"]
+[ext_resource type="ButtonGroup" uid="uid://b4a35pngy8670" path="res://Stages/Games.tres" id="16_amuxr"]
+[ext_resource type="SystemFont" uid="uid://cej7y0pr4hijb" path="res://UI/Titlescreen/buttonFont.tres" id="17_8b0ht"]
+[ext_resource type="Texture2D" uid="uid://b2ms15ysrada0" path="res://UI/themes/kenney_fantasy-ui-borders/PNG/Default/Border/panel-border-010.png" id="18_au7af"]
+[ext_resource type="Texture2D" uid="uid://1lk5yb2ychi7" path="res://UI/themes/InputThemes/controllerBlue.png" id="19_xr8hl"]
+[ext_resource type="Texture2D" uid="uid://dh1ii7d3cdxiq" path="res://UI/themes/InputThemes/keyboardBlue.png" id="20_3xw3h"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_n5coc"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_3pubi")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_ldwnq")
+}],
+"loop": true,
+"name": &"1",
+"speed": 2.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("3_5fbv1")
+}],
+"loop": false,
+"name": &"2",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("4_wht28")
+}],
+"loop": false,
+"name": &"3",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("5_ejtwe")
+}],
+"loop": false,
+"name": &"4",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("6_xrph2")
+}],
+"loop": false,
+"name": &"5",
+"speed": 5.0
+}]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_kh7ln"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("7_jjbom")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_hisf3")
+}],
+"loop": true,
+"name": &"1",
+"speed": 2.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("9_nr6nj")
+}],
+"loop": false,
+"name": &"2",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("10_crjh7")
+}],
+"loop": false,
+"name": &"3",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("11_60cco")
+}],
+"loop": false,
+"name": &"4",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("12_4tc6g")
+}],
+"loop": false,
+"name": &"5",
+"speed": 5.0
+}]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_u8dp7"]
+bg_color = Color(0.15, 0.37, 0.2, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7386g"]
+bg_color = Color(0.28, 0.64, 0.36, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_44ckw"]
+texture = ExtResource("18_au7af")
+texture_margin_left = 10.0
+texture_margin_top = 10.0
+texture_margin_right = 10.0
+texture_margin_bottom = 10.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_6qf1p"]
+texture = ExtResource("18_au7af")
+texture_margin_left = 10.0
+texture_margin_top = 10.0
+texture_margin_right = 10.0
+texture_margin_bottom = 10.0
+
+[node name="UIOverlay" type="Node"]
+
+[node name="HealthbarP1" type="AnimatedSprite2D" parent="."]
+z_index = 100
+position = Vector2(260, 140)
+scale = Vector2(3, 3)
+sprite_frames = SubResource("SpriteFrames_n5coc")
+animation = &"5"
+
+[node name="HealthbarP2" type="AnimatedSprite2D" parent="."]
+z_index = 100
+position = Vector2(1660, 140)
+scale = Vector2(3, 3)
+sprite_frames = SubResource("SpriteFrames_kh7ln")
+animation = &"5"
+
+[node name="ScreenOverlay" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("13_ipdjr")
+
+[node name="ColorRect" type="ColorRect" parent="ScreenOverlay"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.313726)
+
+[node name="HBoxContainer" type="HBoxContainer" parent="ScreenOverlay"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -238.0
+offset_top = -167.0
+offset_right = 238.0
+offset_bottom = 167.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+
+[node name="Player1Config" type="VBoxContainer" parent="ScreenOverlay/HBoxContainer"]
+custom_minimum_size = Vector2(344, 344)
+layout_mode = 2
+alignment = 1
+
+[node name="Label" type="Label" parent="ScreenOverlay/HBoxContainer/Player1Config"]
+layout_mode = 2
+text = "Player Red Controller"
+horizontal_alignment = 1
+
+[node name="InputButtons" type="HBoxContainer" parent="ScreenOverlay/HBoxContainer/Player1Config"]
+layout_mode = 2
+alignment = 1
+
+[node name="ButtonLeft" type="Button" parent="ScreenOverlay/HBoxContainer/Player1Config/InputButtons"]
+custom_minimum_size = Vector2(100, 100)
+layout_mode = 2
+size_flags_stretch_ratio = 20.0
+toggle_mode = true
+icon = ExtResource("14_2hj0x")
+expand_icon = true
+
+[node name="ButtonRight" type="Button" parent="ScreenOverlay/HBoxContainer/Player1Config/InputButtons"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+toggle_mode = true
+icon = ExtResource("15_scwis")
+expand_icon = true
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ScreenOverlay/HBoxContainer"]
+custom_minimum_size = Vector2(344, 344)
+layout_mode = 2
+theme_override_constants/separation = 20
+alignment = 1
+
+[node name="Scoreboard" type="HBoxContainer" parent="ScreenOverlay/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="redWrap" type="CenterContainer" parent="ScreenOverlay/HBoxContainer/VBoxContainer/Scoreboard"]
+layout_mode = 2
+
+[node name="RedSide" type="Control" parent="ScreenOverlay/HBoxContainer/VBoxContainer/Scoreboard/redWrap"]
+custom_minimum_size = Vector2(100, 70)
+layout_mode = 2
+
+[node name="ColorRect" type="ColorRect" parent="ScreenOverlay/HBoxContainer/VBoxContainer/Scoreboard/redWrap/RedSide"]
+custom_minimum_size = Vector2(100, 50)
+layout_mode = 2
+offset_top = 10.0
+offset_right = 100.0
+offset_bottom = 60.0
+color = Color(1, 0, 0, 1)
+
+[node name="redScore" type="Label" parent="ScreenOverlay/HBoxContainer/VBoxContainer/Scoreboard/redWrap/RedSide"]
+layout_mode = 2
+offset_left = 28.0
+offset_top = 6.0
+offset_right = 128.0
+offset_bottom = 61.0
+theme_override_constants/outline_size = 10
+theme_override_font_sizes/font_size = 40
+text = "0"
+
+[node name="VSBadge" type="CenterContainer" parent="ScreenOverlay/HBoxContainer/VBoxContainer/Scoreboard"]
+layout_mode = 2
+
+[node name="TextureRect" type="Polygon2D" parent="ScreenOverlay/HBoxContainer/VBoxContainer/Scoreboard/VSBadge"]
+position = Vector2(-158, -253)
+color = Color(0, 0, 0, 1)
+polygon = PackedVector2Array(120, 250, 260, 250, 220, 330, 160, 330)
+
+[node name="Label" type="Label" parent="ScreenOverlay/HBoxContainer/VBoxContainer/Scoreboard/VSBadge"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 50
+text = "VS"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="blueWrap" type="CenterContainer" parent="ScreenOverlay/HBoxContainer/VBoxContainer/Scoreboard"]
+layout_mode = 2
+
+[node name="BlueSide" type="Control" parent="ScreenOverlay/HBoxContainer/VBoxContainer/Scoreboard/blueWrap"]
+z_index = -1
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+
+[node name="ColorRect" type="ColorRect" parent="ScreenOverlay/HBoxContainer/VBoxContainer/Scoreboard/blueWrap/BlueSide"]
+custom_minimum_size = Vector2(100, 50)
+layout_mode = 2
+offset_left = 6.0
+offset_top = -23.0
+offset_right = 106.0
+offset_bottom = 27.0
+color = Color(0, 0, 1, 1)
+
+[node name="blueScore" type="Label" parent="ScreenOverlay/HBoxContainer/VBoxContainer/Scoreboard/blueWrap/BlueSide"]
+layout_mode = 2
+offset_left = 51.0
+offset_top = -26.0
+offset_right = 151.0
+offset_bottom = 29.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 10
+theme_override_font_sizes/font_size = 40
+text = "0"
+
+[node name="winningPlayer" type="Label" parent="ScreenOverlay/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/outline_size = 20
+theme_override_font_sizes/font_size = 50
+text = "Red vs Blue"
+horizontal_alignment = 1
+
+[node name="GamesContainer" type="HBoxContainer" parent="ScreenOverlay/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ScreenOverlay/HBoxContainer/VBoxContainer/GamesContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="ScreenOverlay/HBoxContainer/VBoxContainer/GamesContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/outline_size = 10
+theme_override_font_sizes/font_size = 30
+text = "Games"
+horizontal_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="ScreenOverlay/HBoxContainer/VBoxContainer/GamesContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 30
+alignment = 1
+
+[node name="1‐game" type="Button" parent="ScreenOverlay/HBoxContainer/VBoxContainer/GamesContainer/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(50, 10)
+layout_mode = 2
+theme_override_styles/pressed = SubResource("StyleBoxFlat_u8dp7")
+theme_override_styles/normal = SubResource("StyleBoxFlat_7386g")
+toggle_mode = true
+button_group = ExtResource("16_amuxr")
+text = "1"
+
+[node name="3‐game" type="Button" parent="ScreenOverlay/HBoxContainer/VBoxContainer/GamesContainer/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(50, 0)
+layout_mode = 2
+theme_override_styles/pressed = SubResource("StyleBoxFlat_u8dp7")
+theme_override_styles/normal = SubResource("StyleBoxFlat_7386g")
+toggle_mode = true
+button_group = ExtResource("16_amuxr")
+text = "3"
+
+[node name="5‐game" type="Button" parent="ScreenOverlay/HBoxContainer/VBoxContainer/GamesContainer/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(50, 0)
+layout_mode = 2
+theme_override_styles/pressed = SubResource("StyleBoxFlat_u8dp7")
+theme_override_styles/normal = SubResource("StyleBoxFlat_7386g")
+toggle_mode = true
+button_group = ExtResource("16_amuxr")
+text = "5"
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="ScreenOverlay/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="ButtonRetry" type="Button" parent="ScreenOverlay/HBoxContainer/VBoxContainer/HBoxContainer2"]
+custom_minimum_size = Vector2(170, 0)
+layout_mode = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 10
+theme_override_fonts/font = ExtResource("17_8b0ht")
+theme_override_font_sizes/font_size = 16
+theme_override_styles/normal = SubResource("StyleBoxTexture_44ckw")
+text = "Start playing"
+
+[node name="ButtonExit" type="Button" parent="ScreenOverlay/HBoxContainer/VBoxContainer/HBoxContainer2"]
+custom_minimum_size = Vector2(170, 0)
+layout_mode = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 10
+theme_override_fonts/font = ExtResource("17_8b0ht")
+theme_override_font_sizes/font_size = 16
+theme_override_styles/normal = SubResource("StyleBoxTexture_6qf1p")
+text = "Exit to menu"
+
+[node name="Player2Config" type="VBoxContainer" parent="ScreenOverlay/HBoxContainer"]
+custom_minimum_size = Vector2(344, 344)
+layout_mode = 2
+alignment = 1
+
+[node name="Label" type="Label" parent="ScreenOverlay/HBoxContainer/Player2Config"]
+layout_mode = 2
+text = "Player Red Controller"
+horizontal_alignment = 1
+
+[node name="InputButtons" type="HBoxContainer" parent="ScreenOverlay/HBoxContainer/Player2Config"]
+layout_mode = 2
+alignment = 1
+
+[node name="ButtonLeft" type="Button" parent="ScreenOverlay/HBoxContainer/Player2Config/InputButtons"]
+custom_minimum_size = Vector2(100, 100)
+layout_mode = 2
+size_flags_stretch_ratio = 20.0
+toggle_mode = true
+icon = ExtResource("19_xr8hl")
+expand_icon = true
+
+[node name="ButtonRight" type="Button" parent="ScreenOverlay/HBoxContainer/Player2Config/InputButtons"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+toggle_mode = true
+icon = ExtResource("20_3xw3h")
+expand_icon = true
